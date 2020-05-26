@@ -1,0 +1,102 @@
+﻿<Page
+    x:Class="FilRouge2.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FilRouge2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="Page_Loaded">
+
+    <Grid Name="MainGrid" VerticalAlignment="Top" HorizontalAlignment="Center"
+       Width="1470" Height="978" Margin="12,12,12,12">
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="FilterRow1"/>
+            <RowDefinition x:Name="FilterRow2"/>
+            <RowDefinition x:Name="OffreDispayRow"/>
+            <RowDefinition x:Name="OffreTitreRow"/>
+            <RowDefinition x:Name="OffreDescRow"/>
+            <RowDefinition x:Name="OffreLinkRow"/>
+        </Grid.RowDefinitions>
+        <Grid Name="FilterGrid1" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="TitleColumn"/>
+                <ColumnDefinition x:Name="TypePosteColumn"/>
+                <ColumnDefinition x:Name="TypeContratColumn"/>
+                <ColumnDefinition x:Name="RegionColumn"/>
+                <ColumnDefinition x:Name="DateMinColumn"/>
+                <ColumnDefinition x:Name="DateMaxColumn"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="LgendRow1"/>
+                <RowDefinition x:Name="FilterDataRiw1"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="TitleLegend" Style="{StaticResource BaseTextBlockStyle}" Text="(TitleLegend)"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="TypePosteLegend" Style="{StaticResource BaseTextBlockStyle}" Text="(TypePosteLegend)"/>
+            <TextBlock Grid.Column="2" Grid.Row="0" x:Uid="TypeContratLegend" Style="{StaticResource BaseTextBlockStyle}" Text="(TypeContratLegend)"/>
+            <Grid Name="RegionFilterGrid" Grid.Column="3" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="RegionLegendColumn"/>
+                    <ColumnDefinition x:Name="RegionRegisterColumn"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" x:Uid="RegionLegend" Style="{StaticResource BaseTextBlockStyle}" Text="(RegionLegend)"/>
+                <Button Name="RegionRegisterButton" Grid.Column="1" x:Uid="RegionRegisterButton" Style="{StaticResource ButtonRevealStyle}"/>
+            </Grid>
+            <TextBlock Grid.Column="4" Grid.Row="0" x:Uid="DateMinLegend" Style="{StaticResource BaseTextBlockStyle}" Text="(DateMinLegend)"/>
+            <TextBlock Grid.Column="5" Grid.Row="0" x:Uid="DateMaxLegend" Style="{StaticResource BaseTextBlockStyle}" Text="(DateMaxLegend)"/>
+            <TextBox Grid.Column="0" Grid.Row="1" x:Uid="TitleTextBox" Style="{StaticResource HandwritingViewCandidateStyle}"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" x:Uid="TypePosteComboBox" Style="{StaticResource HandwritingViewCandidateStyle}"/>
+            <ComboBox Grid.Column="2" Grid.Row="1" x:Uid="TypeContratComboBox" Style="{StaticResource HandwritingViewCandidateStyle}"/>
+            <ComboBox Grid.Column="3" Grid.Row="1" x:Uid="RegionComboBox" Style="{StaticResource HandwritingViewCandidateStyle}"/>
+            <DatePicker Grid.Column="4" Grid.Row="1" x:Uid="DateMinPicker" Style="{StaticResource HandwritingViewCandidateStyle}"/>
+            <DatePicker Grid.Column="5" Grid.Row="1" x:Uid="DateMaxPicker" Style="{StaticResource HandwritingViewCandidateStyle}"/>
+        </Grid>
+        <Grid Name="FilterGrid2" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="DescFilterColumn"/>
+                <ColumnDefinition x:Name="FilterOrderColumn"/>
+                <ColumnDefinition x:Name="LastTenOnlyColumn"/>
+                <ColumnDefinition x:Name="ReinitializeColumn"/>
+                <ColumnDefinition x:Name="FilterColumn"/>
+            </Grid.ColumnDefinitions>
+            <Grid Name="DescFilterGrid" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="DescLegendColumn"/>
+                    <ColumnDefinition x:Name="AnyWordColumn"/>
+                    <ColumnDefinition x:Name="AllWordsColumn"/>
+                    <ColumnDefinition x:Name="ExactExpressionColumn"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition x:Name="DescLegendRow"/>
+                    <RowDefinition x:Name="DescDataRow"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="DescLegend" Style="{StaticResource BaseTextBlockStyle}" Text="(DescLegend)"/>
+                <RadioButton Grid.Column="1" Grid.Row="0" x:Uid="AnyWordRadioButton" Style="{StaticResource PivotTitleContentControlStyle}">
+                    <TextBlock x:Uid="AnyWordRadioButtonLegend" Style="{StaticResource BaseTextBlockStyle}" Text="(AnyWordRadioButtonLegend)"/>
+                </RadioButton>
+                <RadioButton Grid.Column="2" Grid.Row="0" x:Uid="AllWordsRadioButton" Style="{StaticResource PivotTitleContentControlStyle}">
+                    <TextBlock x:Uid="AllWordsRadioButtonLegend" Style="{StaticResource BaseTextBlockStyle}" Text="(AllWordsRadioButtonLegend)"/>
+                </RadioButton>
+                <RadioButton Grid.Column="3" Grid.Row="0" x:Uid="ExactExpressionRadioButton" Style="{StaticResource PivotTitleContentControlStyle}">
+                    <TextBlock x:Uid="ExactExpressionRadioButtonLegend" Style="{StaticResource BaseTextBlockStyle}" Text="(ExactExpressionRadioButtonLegend)"/>
+                </RadioButton>
+                <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" x:Uid="DescTextBox" Style="{StaticResource HandwritingViewCandidateStyle}"/>
+            </Grid>
+            <Grid Name="FilterOrderGrid" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition x:Name="FilterOrderLegendRow"/>
+                    <RowDefinition x:Name="FilterOrderDataRow"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" x:Uid="FilterOrderLegend" Style="{StaticResource BaseTextBlockStyle}" Text="(FilterOrderLegend)"/>
+                <ComboBox Grid.Row="1" x:Uid="FilterOrderComboBox" Style="{StaticResource HandwritingViewCandidateStyle}"/>
+            </Grid>
+            <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" x:Uid="LastTenOnlyButton" Style="{StaticResource ButtonRevealStyle}"/>
+            <Button Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" x:Uid="FilterResetButton" Style="{StaticResource ButtonRevealStyle}"/>
+            <Button Grid.Column="4" Grid.Row="0" Grid.RowSpan="2" x:Uid="FilterButton" Style="{StaticResource ButtonRevealStyle}"/>
+        </Grid>
+        <!-- Mettre l'équivalent de DataGridView en troisième ligne -->
+        <!-- Mettre la description du poste en quatrième ligne -->
+        <!-- Mettre le lien web en cinquième ligne -->
+    </Grid>
+</Page>
