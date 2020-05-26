@@ -33,7 +33,7 @@ namespace FilRouge2
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            OffreDesc = "";
+            vm.OffreDesc = "";
         }
     }
 }
