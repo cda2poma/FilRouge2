@@ -9,99 +9,118 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded">
 
-    <Grid Name="MainGrid" VerticalAlignment="Top" HorizontalAlignment="Center"
-       Width="1470" Height="978" Margin="12,12,12,12">
+    <Grid Name="MainGrid"
+       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="12,12,12,12">
         <Grid.RowDefinitions>
-            <RowDefinition x:Name="FilterRow1" Height="70"/>
-            <RowDefinition x:Name="FilterRow2" Height="70"/>
-            <RowDefinition x:Name="FilterRow3" Height="110"/>
-            <RowDefinition x:Name="ResetRow"/>
-            <RowDefinition x:Name="FilterRow"/>
+            <RowDefinition x:Name="FilterRowTitle"/>
+            <RowDefinition x:Name="FilterRowDateMin"/>
+            <RowDefinition x:Name="FilterRowDateMax"/>
+            <RowDefinition x:Name="FilterRowTypes"/>
+            <RowDefinition x:Name="FilterRowRegion"/>
+            <RowDefinition x:Name="FilterRowDesc"/>
+            <RowDefinition x:Name="FilterRowDescConfig"/>
+            <RowDefinition x:Name="FilterRowOrderAndReset"/>
+            <RowDefinition x:Name="FilterRowExecute"/>
         </Grid.RowDefinitions>
-        <Grid Name="FilterGrid1" Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="TitleColumn"/>
-                <ColumnDefinition x:Name="DateMinColumn"/>
-                <ColumnDefinition x:Name="DateMaxColumn"/>
-            </Grid.ColumnDefinitions>
+        <Grid Name="FilterGridTitle" Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition x:Name="LgendRow1"/>
-                <RowDefinition x:Name="FilterDataRow1"/>
+                <RowDefinition x:Name="TitleLabelRow"/>
+                <RowDefinition x:Name="TitleDataRow"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="TitleLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(TitleLegend)"/>
-            <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="DateMinLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(DateMinLegend)"/>
-            <TextBlock Grid.Column="2" Grid.Row="0" x:Uid="DateMaxLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(DateMaxLegend)"/>
+            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="TitleLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(T)"/>
+            <!--<TextBlock Grid.Column="1" Grid.Row="0" x:Uid="DateMinLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(DMin)"/>
+            <TextBlock Grid.Column="2" Grid.Row="0" x:Uid="DateMaxLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(DMax)"/>-->
             <TextBox Grid.Column="0" Grid.Row="1" x:Uid="TitleTextBox" Style="{StaticResource AutoSuggestBoxTextBoxStyle}"/>
-            <DatePicker Grid.Column="1" Grid.Row="1" x:Uid="DateMinPicker"/>
-            <DatePicker Grid.Column="2" Grid.Row="1" x:Uid="DateMaxPicker"/>
+            <!--<DatePicker Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Uid="DateMinPicker"/>
+            <DatePicker Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" x:Uid="DateMaxPicker"/>-->
         </Grid>
-        <Grid Name="FilterGrid2" Grid.Row="1">
+        <Grid Name="FilterGridDateMin" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="DateMinLabelRow"/>
+                <RowDefinition x:Name="DateMinDataRow"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="DateMinLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(DMin)"/>
+            <DatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMinPicker"/>
+            <!--<DatePicker Grid.Column="1" Grid.Row="1" x:Uid="DateMaxPicker"/>-->
+        </Grid>
+        <Grid Name="FilterGridDateMax" Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="DateMaxLabelRow"/>
+                <RowDefinition x:Name="DateMaxDataRow"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="DateMaxLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(DMax)"/>
+            <DatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMaxPicker"/>
+        </Grid>
+        <Grid Name="FilterGridTypes" Grid.Row="3">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="TypePosteColumn"/>
-                <ColumnDefinition x:Name="TypeContratColumn"/>
-                <ColumnDefinition x:Name="RegionColumn"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="LegendRow2"/>
                 <RowDefinition x:Name="FilterDataRow2"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="TypePosteLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(TypePosteLegend)"/>
-            <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="TypeContratLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(TypeContratLegend)"/>
-            <Grid Name="RegionFilterGrid" Grid.Column="2" Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition x:Name="RegionLegendColumn"/>
-                    <ColumnDefinition x:Name="RegionRegisterColumn"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" x:Uid="RegionLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(RegionLegend)"/>
-                <Button Name="RegionRegisterButton" Grid.Column="1" x:Uid="RegionRegisterButton" Style="{StaticResource ButtonRevealStyle}"/>
-            </Grid>
-            <ComboBox Grid.Column="0" Grid.Row="1" x:Uid="TypePosteComboBox" HorizontalAlignment="Stretch" Margin="12,0,12,0"/>
-            <ComboBox Grid.Column="1" Grid.Row="1" x:Uid="TypeContratComboBox" HorizontalAlignment="Stretch" Margin="12,0,12,0"/>
-            <ComboBox Grid.Column="2" Grid.Row="1" x:Uid="RegionComboBox" HorizontalAlignment="Stretch" Margin="12,0,12,0"/>
+            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="TypePosteLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(TP)"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="TypeContratLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(TC)"/>
+            <ComboBox Grid.Column="0" Grid.Row="1" x:Uid="TypePosteComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" x:Uid="TypeContratComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0"/>
         </Grid>
-        <Grid Name="FilterGrid3" Grid.Row="2">
+        <Grid Name="FilterGridRegion" Grid.Row="4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="DescFilterColumn"/>
-                <ColumnDefinition x:Name="FilterOrderColumn"/>
-                <ColumnDefinition x:Name="FillerColumn"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Grid Name="DescFilterGrid" Grid.Column="0" Grid.ColumnSpan="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition x:Name="DescLegendColumn"/>
-                    <ColumnDefinition x:Name="AnyWordColumn"/>
-                    <ColumnDefinition x:Name="AllWordsColumn"/>
-                    <ColumnDefinition x:Name="ExactExpressionColumn"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition x:Name="DescLegendRow"/>
-                    <RowDefinition x:Name="DescDataRow"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="DescLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(DescLegend)"/>
-                <RadioButton Grid.Column="1" Grid.Row="0" x:Uid="AnyWordRadioButton" Style="{StaticResource PivotTitleContentControlStyle}">
-                    <TextBlock x:Uid="AnyWordRadioButtonLegend" Style="{StaticResource BaseTextBlockStyle}" Text="m"/>
-                </RadioButton>
-                <RadioButton Grid.Column="2" Grid.Row="0" x:Uid="AllWordsRadioButton" Style="{StaticResource PivotTitleContentControlStyle}">
-                    <TextBlock x:Uid="AllWordsRadioButtonLabel" Style="{StaticResource BaseTextBlockStyle}" Text="m"/>
-                </RadioButton>
-                <RadioButton Grid.Column="3" Grid.Row="0" x:Uid="ExactExpressionRadioButton" Style="{StaticResource PivotTitleContentControlStyle}">
-                    <TextBlock x:Uid="ExactExpressionRadioButtonLabel" Style="{StaticResource BaseTextBlockStyle}" Text="m"/>
-                </RadioButton>
-                <TextBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" x:Uid="DescTextBox" Style="{StaticResource HandwritingViewCandidateStyle}"/>
-            </Grid>
-            <Grid Name="FilterOrderGrid" Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition x:Name="FilterOrderLabelRow"/>
-                    <RowDefinition x:Name="FilterOrderDataRow"/>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" x:Uid="FilterOrderLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(FilterOrderLegend)"/>
-                <ComboBox Grid.Row="1" x:Uid="FilterOrderComboBox" HorizontalAlignment="Stretch" Margin="12,0,12,0"/>
-            </Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="RegionLabelRow"/>
+                <RowDefinition x:Name="RegionDataRow"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="RegionLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(R)"/>
+            <Button Grid.Column="1" Grid.Row="0" x:Uid="RegionSetPreferences">
+                <TextBlock x:Uid="RegionSetPreferencesLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(Rsp)"/>
+            </Button>
+            <ComboBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Uid="RegionComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0"/>
         </Grid>
-        <Button Grid.Row="3" HorizontalAlignment="Center">
-            <TextBlock x:Uid="ButtonResetLabel" Style="{StaticResource BaseTextBlockStyle}"/>
-        </Button>
-        <Button Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="12,12,12,12">
-            <TextBlock x:Uid="ButtonFilterLabel" Style="{StaticResource BaseTextBlockStyle}"/>
+        <Grid Name="FilterGridDesc" Grid.Row="5">
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="DescLabelRow"/>
+                <RowDefinition x:Name="DescDataRow"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="DescLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(D)"/>
+            <TextBox Grid.Column="0" Grid.Row="1" x:Uid="TitleTextBox" Style="{StaticResource AutoSuggestBoxTextBoxStyle}"/>
+        </Grid>
+        <Grid Name="FilterGridDescConfig" Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="AnyWordColumn"/>
+                <ColumnDefinition x:Name="AllWordsColumn"/>
+                <ColumnDefinition x:Name="ExactExpressionColumn"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton x:Uid="AnyWordRadioButton" Grid.Column="0">
+                <TextBlock x:Uid="AnyWordLabel" Text="N'importe&#x0a;quel mot"/>
+            </RadioButton>
+            <RadioButton x:Uid="AllWordsRadioButton" Grid.Column="1">
+                <TextBlock x:Uid="AllWordsLabel" Text="Tous les&#x0a;mots"/>
+            </RadioButton>
+            <RadioButton x:Uid="ExactExpressionRadioButton" Grid.Column="2">
+                <TextBlock x:Uid="ExactExpressionLabel" Text="Expression&#x0a;exacte"/>
+            </RadioButton>
+        </Grid>
+        <Grid Name="FilterGridOrderAndReset" Grid.Row="7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="FilterOrderColumn" Width="1.33*"/>
+                <ColumnDefinition x:Name="ResetColumn"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="FilterOrderLabelRow"/>
+                <RowDefinition x:Name="FilterOrderDataRow"/>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Column="0" Grid.Row="0" x:Uid="OrderLabel" Style="{StaticResource AutoSuggestBoxTextBoxStyle}" Text="(O)"/>
+            <ComboBox Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" x:Uid="OrderComboBox"/>
+            <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="ResetButton" Margin="8,8,0,8">
+                <TextBlock x:Uid="ResetButtonLabel" Text="(Reset)"/>
+            </Button>
+        </Grid>
+        <Button Grid.Row="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="FilterButton" Margin="0,8,0,0">
+            <TextBlock x:Uid="FilterButtonLabel" Text="(Filter)"/>
         </Button>
     </Grid>
 </Page>
