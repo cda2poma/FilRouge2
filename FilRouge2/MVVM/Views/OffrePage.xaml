@@ -1,0 +1,51 @@
+﻿<Page
+    x:Class="FilRouge2.OffrePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FilRouge2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Name="OffrePreviewGrid" Margin="12,12,12,12">
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="OffreTitreRow" Height="30"/>
+            <RowDefinition x:Name="OffreTypePosteRow" Height="30"/>
+            <RowDefinition x:Name="OffreTypeContratRow" Height="30"/>
+            <RowDefinition x:Name="OffreRegionRow" Height="30"/>
+            <RowDefinition x:Name="OffreDatePublicationRow" Height="50"/>
+            <RowDefinition x:Name="OffreDescPreviewRow"/>
+            <RowDefinition x:Name="OffreUrlRow" Height="30"/>
+            <RowDefinition x:Name="ButtonsRow" Height="40"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" x:Uid="OffreTitle" Style="{StaticResource BaseTextBlockStyle}" Text="(Title)"/>
+        <TextBlock Grid.Row="1" x:Uid="OffreTypePoste" Style="{StaticResource BaseTextBlockStyle}" Text="(TypePoste)"/>
+        <TextBlock Grid.Row="2" x:Uid="OffreTypeContrat" Style="{StaticResource BaseTextBlockStyle}" Text="(TypeContrat)"/>
+        <TextBlock Grid.Row="3" x:Uid="OffreRegion" Style="{StaticResource BaseTextBlockStyle}" Text="(Region)"/>
+        <Grid Grid.Row="4" x:Name="OffreDateGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="OffrePublishDateColumn"/>
+                <ColumnDefinition x:Name="OffreEditDateColumn"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="OffreateLabelRow"/>
+                <RowDefinition x:Name="OffreDateDataRow"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="OffrePublishDateLabel" Style="{StaticResource BaseTextBlockStyle}" Text="Date de publication"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="OffreEditDateLabel" Margin="3,0,0,0" Style="{StaticResource BaseTextBlockStyle}" Text="Dernière modification"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" x:Uid="OffrePublishDate" Style="{StaticResource BaseTextBlockStyle}" Text="27/05/2020"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" x:Uid="OffreEditDate" Style="{StaticResource BaseTextBlockStyle}" Text="27/05/2020"/>
+        </Grid>
+        <TextBlock Grid.Row="5" x:Uid="OffreDescPreview" Margin="2" Style="{StaticResource BaseTextBlockStyle}" Text="Desc"/>
+        <Border Grid.Row="5" BorderBrush="Black" BorderThickness="1"/>
+        <TextBlock Grid.Row="6">
+                <Hyperlink>
+                    <Run Text="http"/>
+                </Hyperlink>
+        </TextBlock>
+        <Button Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="GoBackButton" Height="37">
+            <TextBlock x:Uid="GoBackButtonLabel" Style="{StaticResource BaseTextBlockStyle}" Text="Retour"/>
+        </Button>
+    </Grid>
+</Page>

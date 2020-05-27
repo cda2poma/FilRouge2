@@ -1,0 +1,97 @@
+﻿<Page
+    x:Class="FilRouge2.ListOffresPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FilRouge2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Name="MainGrid"
+       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="12,12,12,12">
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="ListOffreLabelsRow" Height="40"/>
+            <RowDefinition x:Name="ListOffreRow"/>
+            <RowDefinition x:Name="OffrePreviewRow"/>
+            <RowDefinition x:Name="ButtonsRow" Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid Name="ListOffreLabelsGrid" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="OffreTitleLabelColumn"/>
+                <ColumnDefinition x:Name="OffreDateLabelColumn" Width="0.4*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="TitleLabel" VerticalAlignment="Center" FontSize="13" Style="{StaticResource BaseTextBlockStyle}" Text="Titre"/>
+            <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="DateLabel" VerticalAlignment="Center" FontSize="13" Style="{StaticResource BaseTextBlockStyle}" Text="Date de publication"/>
+        </Grid>
+        <ListView Name="ListOffres" Grid.Row="1">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid BorderBrush="Black" BorderThickness="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="0.4*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding TITRE}" Style="{StaticResource StyleItemList}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding DATEPUBLICATION}" Style="{StaticResource StyleItemList}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Background" Value="LightSkyBlue"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="2"/>
+        <Grid Name="OffrePreviewGrid" Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="OffreTitreRow" Height="25"/>
+                <RowDefinition x:Name="OffreTypePosteRow" Height="25"/>
+                <RowDefinition x:Name="OffreTypeContratRow" Height="25"/>
+                <RowDefinition x:Name="OffreRegionRow" Height="25"/>
+                <RowDefinition x:Name="OffreDatePublicationRow" Height="50"/>
+                <RowDefinition x:Name="OffreDescPreviewRow"/>
+                <RowDefinition x:Name="OffreUrlRow" Height="25"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" x:Uid="OffreTitle" Style="{StaticResource BaseTextBlockStyle}" Text="(Title)"/>
+            <TextBlock Grid.Row="1" x:Uid="OffreTypePoste" Style="{StaticResource BaseTextBlockStyle}" Text="(TypePoste)"/>
+            <TextBlock Grid.Row="2" x:Uid="OffreTypeContrat" Style="{StaticResource BaseTextBlockStyle}" Text="(TypeContrat)"/>
+            <TextBlock Grid.Row="3" x:Uid="OffreRegion" Style="{StaticResource BaseTextBlockStyle}" Text="(Region)"/>
+            <Grid Grid.Row="4" x:Name="OffreDateGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="OffrePublishDateColumn"/>
+                    <ColumnDefinition x:Name="OffreEditDateColumn"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition x:Name="OffreDateLabelRow"/>
+                    <RowDefinition x:Name="OffreDateDataRow"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="OffrePublishDateLabel" Style="{StaticResource BaseTextBlockStyle}" Text="Date de publication"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="OffreEditDateLabel" Margin="3,0,0,0" Style="{StaticResource BaseTextBlockStyle}" Text="Dernière modification"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" x:Uid="OffrePublishDate" Style="{StaticResource BaseTextBlockStyle}" Text="27/05/2020"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" x:Uid="OffreEditDate" Margin="3,0,0,0" Style="{StaticResource BaseTextBlockStyle}" Text="27/05/2020"/>
+            </Grid>
+            <TextBlock Grid.Row="5" x:Uid="OffreDescPreview" Margin="2" Style="{StaticResource BaseTextBlockStyle}" Text="Desc"/>
+            <Border Grid.Row="5" BorderBrush="Black" BorderThickness="1"/>
+            <TextBlock Grid.Row="6">
+                <Hyperlink>
+                    <Run Text="http"/>
+                </Hyperlink>
+            </TextBlock>
+        </Grid>
+        <Grid Grid.Row="3" Name="ButtonsGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="DisplayOffreColumn"/>
+                <ColumnDefinition x:Name="GoBackColumn"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="DisplayOffreButton" Margin="4">
+                <TextBlock x:Uid="DisplayOffreButtonLabel" Style="{StaticResource BaseTextBlockStyle}" Text="Voir l'offre"/>
+            </Button>
+            <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="DisplayOffreButton" Margin="4">
+                <TextBlock x:Uid="GoBackButtonLabel" Style="{StaticResource BaseTextBlockStyle}" Text="Retour"/>
+            </Button>
+        </Grid>
+    </Grid>
+</Page>
