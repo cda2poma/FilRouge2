@@ -119,6 +119,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MVVM\Models\FilterDataM.cs" />
+    <Compile Include="MVVM\Models\OffreDataM.cs" />
     <Compile Include="MVVM\ViewsModel\ListOffresVM.cs" />
     <Compile Include="MVVM\Views\ListOffresPage.xaml.cs">
       <DependentUpon>ListOffresPage.xaml</DependentUpon>
@@ -174,8 +176,12 @@
   <ItemGroup>
     <PRIResource Include="ResourcesLocalization\fr-FR\Resources.resw" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="MVVM\Models\" />
+    <ProjectReference Include="..\BO2\BO.csproj">
+      <Project>{e5a72f6a-fa89-41c2-81f0-d102ff319d08}</Project>
+      <Name>BO</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

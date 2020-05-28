@@ -28,11 +28,7 @@
                 <RowDefinition x:Name="TitleDataRow"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="TitleLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(T)"/>
-            <!--<TextBlock Grid.Column="1" Grid.Row="0" x:Uid="DateMinLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(DMin)"/>
-            <TextBlock Grid.Column="2" Grid.Row="0" x:Uid="DateMaxLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(DMax)"/>-->
-            <TextBox Grid.Column="0" Grid.Row="1" x:Uid="TitleTextBox" Style="{StaticResource AutoSuggestBoxTextBoxStyle}"/>
-            <!--<DatePicker Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" x:Uid="DateMinPicker"/>
-            <DatePicker Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" x:Uid="DateMaxPicker"/>-->
+            <TextBox Grid.Column="0" Grid.Row="1" x:Uid="TitleTextBox" Text="{Binding OffreTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource AutoSuggestBoxTextBoxStyle}"/>
         </Grid>
         <Grid Name="FilterGridDateMin" Grid.Row="1">
             <Grid.RowDefinitions>
@@ -40,7 +36,7 @@
                 <RowDefinition x:Name="DateMinDataRow"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="DateMinLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(DMin)"/>
-            <DatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMinPicker"/>
+            <DatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMinPicker" Date="{Binding OffreDateMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <!--<DatePicker Grid.Column="1" Grid.Row="1" x:Uid="DateMaxPicker"/>-->
         </Grid>
         <Grid Name="FilterGridDateMax" Grid.Row="2">
@@ -49,21 +45,21 @@
                 <RowDefinition x:Name="DateMaxDataRow"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="DateMaxLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(DMax)"/>
-            <DatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMaxPicker"/>
+            <DatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMaxPicker" Date="{Binding OffreDateMax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
         <Grid Name="FilterGridTypes" Grid.Row="3">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition x:Name="TypePosteColumn"/>
+                <ColumnDefinition x:Name="TypeContratColumn"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition x:Name="LegendRow2"/>
-                <RowDefinition x:Name="FilterDataRow2"/>
+                <RowDefinition x:Name="TypeLabelRow"/>
+                <RowDefinition x:Name="TypeDataRow"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="TypePosteLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(TP)"/>
             <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="TypeContratLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(TC)"/>
-            <ComboBox Grid.Column="0" Grid.Row="1" x:Uid="TypePosteComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0"/>
-            <ComboBox Grid.Column="1" Grid.Row="1" x:Uid="TypeContratComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0"/>
+            <ComboBox Grid.Column="0" Grid.Row="1" x:Uid="TypePosteComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListTypesPostes}" SelectedItem="{Binding SelectedTypePoste, Mode=TwoWay}"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" x:Uid="TypeContratComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListTypesontrat}" SelectedItem="{Binding SelectedTypeContrat, Mode=TwoWay}"/>
         </Grid>
         <Grid Name="FilterGridRegion" Grid.Row="4">
             <Grid.ColumnDefinitions>
@@ -75,10 +71,10 @@
                 <RowDefinition x:Name="RegionDataRow"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="RegionLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(R)"/>
-            <Button Grid.Column="1" Grid.Row="0" x:Uid="RegionSetPreferences">
+            <Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0,0,12,3" x:Uid="RegionSetPreferences">
                 <TextBlock x:Uid="RegionSetPreferencesLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(Rsp)"/>
             </Button>
-            <ComboBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Uid="RegionComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0"/>
+            <ComboBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Uid="RegionComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListRegions}" SelectedItem="{Binding SelectedTypeContrat, Mode=TwoWay}"/>
         </Grid>
         <Grid Name="FilterGridDesc" Grid.Row="5">
             <Grid.RowDefinitions>
@@ -86,7 +82,7 @@
                 <RowDefinition x:Name="DescDataRow"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="DescLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(D)"/>
-            <TextBox Grid.Column="0" Grid.Row="1" x:Uid="TitleTextBox" Style="{StaticResource AutoSuggestBoxTextBoxStyle}"/>
+            <TextBox Grid.Column="0" Grid.Row="1" x:Uid="TitleTextBox" Text="{Binding OffreDesc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource AutoSuggestBoxTextBoxStyle}"/>
         </Grid>
         <Grid Name="FilterGridDescConfig" Grid.Row="6">
             <Grid.ColumnDefinitions>
@@ -113,9 +109,9 @@
                 <RowDefinition x:Name="FilterOrderLabelRow"/>
                 <RowDefinition x:Name="FilterOrderDataRow"/>
             </Grid.RowDefinitions>
-            <TextBox Grid.Column="0" Grid.Row="0" x:Uid="OrderLabel" Style="{StaticResource AutoSuggestBoxTextBoxStyle}" Text="(O)"/>
-            <ComboBox Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" x:Uid="OrderComboBox"/>
-            <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="ResetButton" Margin="8,8,0,8">
+            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="OrderLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(O)"/>
+            <ComboBox Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" x:Uid="OrderComboBox" ItemsSource="{Binding ListRegion}" SelectedItem="{Binding SelectedFilterOrder, Mode=TwoWay}"/>
+            <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="ResetButton" Margin="8,8,0,2">
                 <TextBlock x:Uid="ResetButtonLabel" Text="(Reset)"/>
             </Button>
         </Grid>

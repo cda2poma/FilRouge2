@@ -24,7 +24,7 @@
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="TitleLabel" VerticalAlignment="Center" FontSize="13" Style="{StaticResource BaseTextBlockStyle}" Text="Titre"/>
             <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="DateLabel" VerticalAlignment="Center" FontSize="13" Style="{StaticResource BaseTextBlockStyle}" Text="Date de publication"/>
         </Grid>
-        <ListView Name="ListOffres" Grid.Row="1">
+        <ListView Name="ListOffres" Grid.Row="1" ItemsSource="{Binding ListOffres}" SelectedItem="{Binding SelectedOffre, Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid BorderBrush="Black" BorderThickness="1">
@@ -32,8 +32,8 @@
                             <ColumnDefinition/>
                             <ColumnDefinition Width="0.4*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding TITRE}" Style="{StaticResource StyleItemList}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding DATEPUBLICATION}" Style="{StaticResource StyleItemList}"/>
+                        <TextBlock Grid.Column="0" Text="{Binding TITRE}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding DATEPUBLICATION}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
