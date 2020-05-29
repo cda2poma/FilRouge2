@@ -22,9 +22,12 @@ namespace FilRouge2
     /// </summary>
     public sealed partial class OffrePage : Page
     {
+        private OffrePageVM vm = new OffrePageVM();
+        
         public OffrePage()
         {
             this.InitializeComponent();
+            DataContext = vm;
         }
     }
 }

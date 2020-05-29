@@ -8,6 +8,12 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <!--<Page.Resources>
+        <local:DescPreviewConverter x:Key="DescPreviewConverter"/>
+        <local:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+        <local:StringToHyperlinkConverter x:Key="StringToHyperlinkConverter"}
+    </Page.Resources>-->
+
     <Grid Name="OffrePreviewGrid" Margin="12,12,12,12">
         <Grid.RowDefinitions>
             <RowDefinition x:Name="OffreTitreRow" Height="30"/>
@@ -19,10 +25,10 @@
             <RowDefinition x:Name="OffreUrlRow" Height="30"/>
             <RowDefinition x:Name="ButtonsRow" Height="40"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" x:Uid="OffreTitle" Style="{StaticResource BaseTextBlockStyle}" Text="(Title)"/>
-        <TextBlock Grid.Row="1" x:Uid="OffreTypePoste" Style="{StaticResource BaseTextBlockStyle}" Text="(TypePoste)"/>
-        <TextBlock Grid.Row="2" x:Uid="OffreTypeContrat" Style="{StaticResource BaseTextBlockStyle}" Text="(TypeContrat)"/>
-        <TextBlock Grid.Row="3" x:Uid="OffreRegion" Style="{StaticResource BaseTextBlockStyle}" Text="(Region)"/>
+        <TextBlock Grid.Row="0" x:Uid="OffreTitle" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding Title, Mode=TwoWay}"/>
+        <TextBlock Grid.Row="1" x:Uid="OffreTypePoste" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding TypePosteTitle, Mode=TwoWay}"/>
+        <TextBlock Grid.Row="2" x:Uid="OffreTypeContrat" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding TypeContratTitle, Mode=TwoWay}"/>
+        <TextBlock Grid.Row="3" x:Uid="OffreRegion" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding RegionName, Mode=TwoWay}"/>
         <Grid Grid.Row="4" x:Name="OffreDateGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="OffrePublishDateColumn"/>
@@ -34,14 +40,14 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="OffrePublishDateLabel" Style="{StaticResource BaseTextBlockStyle}" Text="Date de publication"/>
             <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="OffreEditDateLabel" Margin="3,0,0,0" Style="{StaticResource BaseTextBlockStyle}" Text="Dernière modification"/>
-            <TextBlock Grid.Column="0" Grid.Row="1" x:Uid="OffrePublishDate" Style="{StaticResource BaseTextBlockStyle}" Text="27/05/2020"/>
-            <TextBlock Grid.Column="1" Grid.Row="1" x:Uid="OffreEditDate" Style="{StaticResource BaseTextBlockStyle}" Text="27/05/2020"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" x:Uid="OffrePublishDate" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding DateMin, Mode=TwoWay}"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" x:Uid="OffreEditDate" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding DateMax, Mode=Twoway}"/>
         </Grid>
-        <TextBlock Grid.Row="5" x:Uid="OffreDescPreview" Margin="2" Style="{StaticResource BaseTextBlockStyle}" Text="Desc"/>
+        <TextBlock Grid.Row="5" x:Uid="OffreDescPreview" Margin="2" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding Desc, Mode=TwoWay}"/>
         <Border Grid.Row="5" BorderBrush="Black" BorderThickness="1"/>
         <TextBlock Grid.Row="6">
                 <Hyperlink>
-                    <Run Text="http"/>
+                    <Run Text="{Binding Url, Mode=TwoWay}"/>
                 </Hyperlink>
         </TextBlock>
         <Button Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="GoBackButton" Height="37">

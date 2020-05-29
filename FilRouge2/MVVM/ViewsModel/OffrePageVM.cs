@@ -1,21 +1,13 @@
-﻿using BO;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FilRouge2
 {
-    class ListOffresVM : ViewModelBase
+    class OffrePageVM : ViewModelBase
     {
-        public ListOffresVM() { }
-
-        private readonly ObservableCollection<Offre> _listOffres = new ObservableCollection<Offre>();
-        public ObservableCollection<Offre> ListOffres
-        { get { return _listOffres; } }
-
         public string Title
         {
             get { return OffreDataM.Instance.Title; }
