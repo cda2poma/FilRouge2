@@ -119,7 +119,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\Views\DescPreviewConverter.cs" />
+    <Compile Include="MVVM\Models\ConnectionDataM.cs" />
+    <Compile Include="MVVM\ViewsModel\TryReconnectVM.cs" />
+    <Compile Include="MVVM\Views\BooleanToStringConverter.cs" />
+    <Compile Include="MVVM\Views\BooleanToVisibilityConverter.cs" />
     <Compile Include="MVVM\Models\FilterDataM.cs" />
     <Compile Include="MVVM\Models\OffreDataM.cs" />
     <Compile Include="MVVM\ViewsModel\ListOffresVM.cs" />
@@ -138,6 +141,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MVVM\ViewsModel\ViewModelBase.cs" />
     <Compile Include="MVVM\Views\StringToHyperLinkConverter.cs" />
+    <Compile Include="MVVM\Views\TryReconnectContentDialog.xaml.cs">
+      <DependentUpon>TryReconnectContentDialog.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -168,6 +174,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MVVM\Views\OffrePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MVVM\Views\TryReconnectContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

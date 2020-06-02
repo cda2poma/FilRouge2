@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -31,9 +33,37 @@ namespace FilRouge2
             DataContext = vm;
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            vm.OffreDesc = "";
+            try
+            { await vm.ConnectAsync(); }
+            catch (Exception)
+            {
+                TryReconnectContentDialog tryReconnectDialog = new TryReconnectContentDialog();
+                await tryReconnectDialog.ShowAsync();
+                if (tryReconnectDialog.TryReconnect == true)
+                { TryReconnect(tryReconnectDialog); }
+                else
+                {
+                    //close
+                }
+            }
+        }
+
+        private async void TryReconnect(TryReconnectContentDialog tryReconnectDialog)
+        {
+            try
+            { await vm.ConnectAsync(); }
+            catch (Exception)
+            {
+                await tryReconnectDialog.ShowAsync();
+                if (tryReconnectDialog.TryReconnect == true)
+                { TryReconnect(tryReconnectDialog); }
+                else
+                {
+                    //close
+                }
+            }
         }
     }
 }

@@ -8,11 +8,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <!--<Page.Resources>
-        <local:DescPreviewConverter x:Key="DescPreviewConverter"/>
+    <Page.Resources>
         <local:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
-        <local:StringToHyperlinkConverter x:Key="StringToHyperlinkConverter"}
-    </Page.Resources>-->
+        <local:StringToHyperLinkConverter x:Key="StringToHyperlinkConverter"/>
+    </Page.Resources>
 
     <Grid Name="MainGrid"
        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="12,12,12,12">
@@ -79,8 +78,8 @@
                 <TextBlock Grid.Column="0" Grid.Row="1" x:Uid="OffrePublishDate" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding DateMin, Mode=TwoWay}"/>
                 <TextBlock Grid.Column="1" Grid.Row="1" x:Uid="OffreEditDate" Margin="3,0,0,0" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding DateMax, Mode=TwoWay}"/>
             </Grid>
-            <TextBlock Grid.Row="5" x:Uid="OffreDescPreview" Margin="2" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding Desc, Mode=TwoWay}"/>
-            <!--Text="{Binding Desc, Converter={StaticResource DescPreviewConverter}}"-->
+            <TextBlock Grid.Row="5" x:Uid="OffreDescPreview" Margin="2" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding Desc, Mode=TwoWay}"
+                TextTrimming="WordEllipsis"/>
             <Border Grid.Row="5" BorderBrush="Black" BorderThickness="1"/>
             <TextBlock Grid.Row="6">
                 <Hyperlink NavigateUri="{Binding Url}">

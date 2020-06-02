@@ -37,7 +37,6 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="DateMinLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(DMin)"/>
             <DatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMinPicker" Date="{Binding OffreDateMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <!--<DatePicker Grid.Column="1" Grid.Row="1" x:Uid="DateMaxPicker"/>-->
         </Grid>
         <Grid Name="FilterGridDateMax" Grid.Row="2">
             <Grid.RowDefinitions>
@@ -116,7 +115,12 @@
             </Button>
         </Grid>
         <Button Grid.Row="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="FilterButton" Margin="0,8,0,0">
-            <TextBlock x:Uid="FilterButtonLabel" Text="(Filter)"/>
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <ProgressRing x:Name="prConnect" Visibility="{Binding IsConnecting, Converter={StaticResource BooleanToVisibilityConverter}}" IsActive="{Binding IsConnecting}" VerticalAlignment="Center"/>
+                    <TextBlock x:Uid="FilterButtonLabel" Text="{Binding IsConnecting, Converter={StaticResource BooleanToStringConverter}}"/>
+                </StackPanel>
+            </Button.Content>
         </Button>
     </Grid>
 </Page>

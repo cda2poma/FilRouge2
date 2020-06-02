@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Data;
 
 namespace FilRouge2
 {
-    class StringToVisibilityConverter : DependencyObject, IValueConverter
+    public class StringToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

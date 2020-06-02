@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Documents;
 
 namespace FilRouge2
 {
-    class StringToHyperLinkConverter : DependencyObject, IValueConverter
+    public class StringToHyperLinkConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

@@ -8,11 +8,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <!--<Page.Resources>
-        <local:DescPreviewConverter x:Key="DescPreviewConverter"/>
+    <Page.Resources>
         <local:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
-        <local:StringToHyperlinkConverter x:Key="StringToHyperlinkConverter"}
-    </Page.Resources>-->
+        <local:StringToHyperLinkConverter x:Key="StringToHyperLinkConverter"/>
+    </Page.Resources>
 
     <Grid Name="OffrePreviewGrid" Margin="12,12,12,12">
         <Grid.RowDefinitions>

@@ -117,5 +117,23 @@ namespace FilRouge2
                 RaisepropertyChanged();
             }
         }
+
+        private bool _isConnecting;
+
+        public bool IsConnecting
+        {
+            get { return ConnectionDataM.Instance.IsConnecting; }
+            set
+            {
+                ConnectionDataM.Instance.IsConnecting = value;
+                RaisepropertyChanged();
+            }
+        }
+
+        public async Task ConnectAsync()
+        {
+            IsConnecting = true;
+
+        }
     }
 }
