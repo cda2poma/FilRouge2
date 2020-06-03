@@ -70,7 +70,7 @@
                 <RowDefinition x:Name="RegionDataRow"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="RegionLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(R)"/>
-            <Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0,0,12,3" x:Uid="RegionSetPreferences">
+            <Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0,0,12,3" x:Uid="RegionSetPreferences" Click="Button_Click_1">
                 <TextBlock x:Uid="RegionSetPreferencesLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(Rsp)"/>
             </Button>
             <ComboBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Uid="RegionComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListRegions}" SelectedItem="{Binding SelectedTypeContrat, Mode=TwoWay}"/>
@@ -89,13 +89,13 @@
                 <ColumnDefinition x:Name="AllWordsColumn"/>
                 <ColumnDefinition x:Name="ExactExpressionColumn"/>
             </Grid.ColumnDefinitions>
-            <RadioButton x:Uid="AnyWordRadioButton" Grid.Column="0">
+            <RadioButton x:Name="RadioButton_AnyWord" x:Uid="AnyWordRadioButton" Grid.Column="0" Checked="RadioButton_Checked_AnyWord" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,0,104,0" IsChecked="True">
                 <TextBlock x:Uid="AnyWordLabel" Text="N'importe&#x0a;quel mot"/>
             </RadioButton>
-            <RadioButton x:Uid="AllWordsRadioButton" Grid.Column="1">
+            <RadioButton x:Name="RadioButton_AllWords" x:Uid="AllWordsRadioButton" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="0,0,104,0" Checked="RadioButton_Checked_AllWords">
                 <TextBlock x:Uid="AllWordsLabel" Text="Tous les&#x0a;mots"/>
             </RadioButton>
-            <RadioButton x:Uid="ExactExpressionRadioButton" Grid.Column="2">
+            <RadioButton x:Name="RadioButton_ExactExpression" x:Uid="ExactExpressionRadioButton" Grid.Column="2" HorizontalAlignment="Stretch" Margin="0,0,-8,0" Checked="RadioButton_Checked_ExactExpression">
                 <TextBlock x:Uid="ExactExpressionLabel" Text="Expression&#x0a;exacte"/>
             </RadioButton>
         </Grid>
@@ -110,11 +110,11 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="OrderLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(O)"/>
             <ComboBox Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" x:Uid="OrderComboBox" ItemsSource="{Binding ListRegion}" SelectedItem="{Binding SelectedFilterOrder, Mode=TwoWay}"/>
-            <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="ResetButton" Margin="8,8,0,2">
+            <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="ResetButton" Margin="8,8,0,2" Click="Button_Click">
                 <TextBlock x:Uid="ResetButtonLabel" Text="(Reset)"/>
             </Button>
         </Grid>
-        <Button Grid.Row="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="FilterButton" Margin="0,8,0,0">
+        <Button Grid.Row="8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="FilterButton" Margin="0,8,0,0" Click="Button_Click_2">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
                     <ProgressRing x:Name="prConnect" Visibility="{Binding IsConnecting, Converter={StaticResource BooleanToVisibilityConverter}}" IsActive="{Binding IsConnecting}" VerticalAlignment="Center"/>

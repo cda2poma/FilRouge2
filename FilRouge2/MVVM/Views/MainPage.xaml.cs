@@ -65,5 +65,28 @@ namespace FilRouge2
                 }
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            RadioButton_AllWords.IsChecked = true;
+            vm.ResetData();
+        }
+
+        private void RadioButton_Checked_ExactExpression(object sender, RoutedEventArgs e)
+        { vm.DescConfig = 1; }
+
+        private void RadioButton_Checked_AllWords(object sender, RoutedEventArgs e)
+        { vm.DescConfig = 0; }
+
+        private void RadioButton_Checked_AnyWord(object sender, RoutedEventArgs e)
+        { vm.DescConfig = -1; }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            //Enregistrement des préférences
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        { vm.FilterData(); }
     }
 }

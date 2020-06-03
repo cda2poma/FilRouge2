@@ -135,5 +135,21 @@ namespace FilRouge2
             IsConnecting = true;
 
         }
+
+        public void ResetData()
+        {
+            OffreTitle = "";
+            OffreDateMin = ConnectionDataM.Instance.MinDate;
+            OffreDateMax = DateTime.Today;
+            SelectedTypePoste = _listTypesPostes[0];
+            SelectedTypeContrat = _listTypesContrat[0];
+            SelectedRegion = _listRegions[0];
+            SelectedFilterOrder = _listFilterOrder[0];
+        }
+
+        public void FilterData()
+        {
+            ConnectionDataM.Instance.FilterData();
+        }
     }
 }

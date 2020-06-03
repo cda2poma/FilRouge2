@@ -8,10 +8,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
+    <!--<Page.Resources>
         <local:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
         <local:StringToHyperLinkConverter x:Key="StringToHyperlinkConverter"/>
-    </Page.Resources>
+    </Page.Resources>-->
 
     <Grid Name="MainGrid"
        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="12,12,12,12">
