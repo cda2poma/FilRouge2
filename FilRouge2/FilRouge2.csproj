@@ -120,6 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\Models\ConnectionDataM.cs" />
+    <Compile Include="MVVM\Models\RegionPreferenceM.cs" />
     <Compile Include="MVVM\ViewsModel\TryReconnectVM.cs" />
     <Compile Include="MVVM\Views\BooleanToStringConverter.cs" />
     <Compile Include="MVVM\Views\BooleanToVisibilityConverter.cs" />
@@ -188,6 +189,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

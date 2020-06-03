@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Store.Preview.InstallControl;
 
 namespace FilRouge2
 {
@@ -40,25 +42,9 @@ namespace FilRouge2
 
         public event EventHandler<TypePoste> UpdateTypePosteEvent;
 
-        public event EventHandler<DateTime> MinDateChangeEvent;
-
         public HubConnection HubConnect;
 
-        private DateTime _minDate;
-
-        public DateTime MinDate
-        {
-            get { return _minDate; }
-            set
-            {
-                _minDate = value;
-                MinDateChangeEvent(null, value);
-            }
-        }
-
         public bool TryReconnect;
-
-        public bool IsConnecting;
 
         public async Task ConnectAsync(string hubAddress)
         {
@@ -84,7 +70,9 @@ namespace FilRouge2
             { Console.Error.WriteLine($"Server down: {e.Message}"); }
         }
 
-        public async List<Offre> FilterData(string title, int idTypePoste, int idTypeContrat, int idRegion, DateTime dateMin, DateTime dateMax, string desc, int descConfig, FilterOrderObject filterOrder)
+        public bool IsConnecting { get; set; }
+
+        public async Task GetFilteredListOffres (string title, int idTypePoste, int idTypeContrat, int idRegion, DateTime dateMin, DateTime dateMax, string desc, int descConfig, FilterOrderObject filterOrder)
         {
             DTOfilter filter = new DTOfilter();
             filter.TITRE = title;
@@ -96,6 +84,23 @@ namespace FilRouge2
             filter.DESC = desc;
             filter.DescConfig = descConfig;
             filter.FilterOrder = filterOrder;
+            OffreDataM.Instance.ListOffres = FilterDataM.Instance.DataTransferFilterIsDefault(filter) ? await GetAllOffres() : await GetOffresByCriteria(filter);
+        }
+
+        private async Task<List<Offre>> GetAllOffres()
+        {
+            List<Offre> _return = new List<Offre>();
+            Task<List<Offre>> allOffres = HubConnect.InvokeAsync<List<Offre>>("GetAllOffres");
+            await allOffres;
+            return allOffres.Result;
+        }
+
+        private async Task<List<Offre>> GetOffresByCriteria(DTOfilter filter)
+        {
+            filter.FilterOrder.Desc = "";
+            Task<List<Offre>> offresByCriteria = HubConnect.InvokeAsync<List<Offre>>("GetOffresByCriteria", filter);
+            await offresByCriteria;
+            return offresByCriteria.Result;
         }
     }
 }

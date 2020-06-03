@@ -82,11 +82,45 @@ namespace FilRouge2
         { vm.DescConfig = -1; }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
+        { RegionPreferenceM.Instance.Save(vm.SelectedRegion); }
+
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            //Enregistrement des préférences
+            if (await vm.FilterData())
+            {
+                Frame.Navigate(typeof(ListOffresPage));
+                vm.IsConnecting = false;
+            }
+            else
+            {
+                TryReconnectContentDialog tryReconnectDialog = new TryReconnectContentDialog();
+                await tryReconnectDialog.ShowAsync();
+                if (tryReconnectDialog.TryReconnect == true)
+                { TryFilteringAgain(tryReconnectDialog); }
+                else
+                {
+                    //close
+                }
+            }
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        { vm.FilterData(); }
+        private async void TryFilteringAgain(TryReconnectContentDialog tryReconnectDialog)
+        {
+            if (await vm.FilterData())
+            { 
+                Frame.Navigate(typeof(ListOffresPage));
+                vm.IsConnecting = false;
+            }
+            else
+            {
+                await tryReconnectDialog.ShowAsync();
+                if (tryReconnectDialog.TryReconnect == true)
+                { TryFilteringAgain(tryReconnectDialog); }
+                else
+                {
+                    //close
+                }
+            }
+        }
     }
 }

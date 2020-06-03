@@ -71,7 +71,7 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="RegionLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(R)"/>
             <Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0,0,12,3" x:Uid="RegionSetPreferences" Click="Button_Click_1">
-                <TextBlock x:Uid="RegionSetPreferencesLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(Rsp)"/>
+                <TextBlock x:Uid="RegionSetPreferencesLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(Rsp)" HorizontalAlignment="Left" Width="33"/>
             </Button>
             <ComboBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Uid="RegionComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListRegions}" SelectedItem="{Binding SelectedTypeContrat, Mode=TwoWay}"/>
         </Grid>

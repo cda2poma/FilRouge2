@@ -139,7 +139,7 @@ namespace FilRouge2
         public void ResetData()
         {
             OffreTitle = "";
-            OffreDateMin = ConnectionDataM.Instance.MinDate;
+            OffreDateMin = FilterDataM.Instance.MinChoosableDate;
             OffreDateMax = DateTime.Today;
             SelectedTypePoste = _listTypesPostes[0];
             SelectedTypeContrat = _listTypesContrat[0];
@@ -147,9 +147,17 @@ namespace FilRouge2
             SelectedFilterOrder = _listFilterOrder[0];
         }
 
-        public void FilterData()
+        public async Task<bool> FilterData()
         {
-            ConnectionDataM.Instance.FilterData();
+            IsConnecting = true;
+            try
+            {
+                await ConnectionDataM.Instance.GetFilteredListOffres(OffreTitle, SelectedTypePoste.ID, SelectedTypeContrat.ID, SelectedRegion.ID,
+                    OffreDateMin, OffreDateMax, OffreDesc, DescConfig, SelectedFilterOrder);
+                return true;
+            }
+            catch
+            { return false; }
         }
     }
 }

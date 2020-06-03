@@ -31,7 +31,20 @@ namespace FilRouge2
             }
         }
 
+        public event EventHandler<DateTime> MinDateChangeEvent;
+
         public string Title { get; set; }
+        private DateTime _minChoosableDate;
+
+        public DateTime MinChoosableDate
+        {
+            get { return _minChoosableDate; }
+            set
+            {
+                _minChoosableDate = value;
+                MinDateChangeEvent(null, value);
+            }
+        }
         public DateTime DateMin { get; set; }
         public DateTime DateMax { get; set; }
         public TypePoste TypePoste { get; set; }
@@ -40,5 +53,14 @@ namespace FilRouge2
         public string Desc { get; set; }
         public int DescConfig { get; set; }
         public FilterOrderObject FilterOrder { get; set; }
+
+        public bool DataTransferFilterIsDefault(DTOfilter filter)
+        {
+            return filter.TITRE == "" && filter.DESC == "" && filter.IDTYPEPOSTE == 0 && filter.IDTYPECONTRAT == 0 && filter.IDREGION == 0 && filter.DATEPUBLICATIONMIN == _minChoosableDate
+                  && filter.DATEPUBLICATIONMAX == DateTime.Today && FilterOrderObjectIsDefault(filter.FilterOrder);
+        }
+
+        private bool FilterOrderObjectIsDefault(FilterOrderObject filter)
+        { return filter.ColumnNumber == 6 && filter.Asc == false; }
     }
 }

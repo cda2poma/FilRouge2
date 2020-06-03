@@ -30,6 +30,7 @@ namespace FilRouge2
             }
         }
 
+        public List<Offre> ListOffres { get; set; }
         public Offre Offre { get; set; }
         public string Title { get; set; }
         public string TypePosteTitle { get; set; }

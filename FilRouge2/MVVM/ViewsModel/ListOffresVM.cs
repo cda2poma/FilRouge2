@@ -16,6 +16,16 @@ namespace FilRouge2
         public ObservableCollection<Offre> ListOffres
         { get { return _listOffres; } }
 
+        public Offre SelectedOffre
+        {
+            get { return OffreDataM.Instance.Offre; }
+            set
+            {
+                OffreDataM.Instance.Offre = value;
+                RaisepropertyChanged();
+            }
+        }
+
         public string Title
         {
             get { return OffreDataM.Instance.Title; }
@@ -94,6 +104,37 @@ namespace FilRouge2
                 OffreDataM.Instance.Url = value;
                 RaisepropertyChanged();
             }
+        }
+
+        public void UpdateListOffres()
+        {
+            List<Offre> updatedListOffres = OffreDataM.Instance.ListOffres;
+            for (int i = ListOffres.Count - 1; i >= 0; i--)
+            {
+                if (!updatedListOffres.Contains(ListOffres[i]))
+                { ListOffres.RemoveAt(i); }
+            }
+            foreach (Offre offre in updatedListOffres)
+            {
+                if (!ListOffres.Contains(offre))
+                { ListOffres.Add(offre); }
+            }
+            FilterOrderObject filterOrder = FilterDataM.Instance.FilterOrder;
+            if (filterOrder.ColumnNumber == 1)
+            { 
+                if (filterOrder.Asc)
+                { ListOffres.OrderBy(t => t.TITRE); }
+                else
+                { ListOffres.OrderByDescending(t => t.TITRE); }
+            }
+            else if (filterOrder.ColumnNumber == 6)
+            {
+                if (filterOrder.Asc)
+                { ListOffres.OrderBy(t => t.DATEPUBLICATION); }
+                else
+                { ListOffres.OrderByDescending(t => t.DATEPUBLICATION); }
+            }
+            RaisepropertyChanged(nameof(SelectedOffre));
         }
     }
 }

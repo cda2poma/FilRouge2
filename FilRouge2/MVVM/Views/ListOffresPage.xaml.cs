@@ -29,5 +29,10 @@ namespace FilRouge2
             this.InitializeComponent();
             DataContext = vm;
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
