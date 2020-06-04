@@ -70,7 +70,7 @@ namespace FilRouge2
             { Console.Error.WriteLine($"Server down: {e.Message}"); }
         }
 
-        public bool IsConnecting { get; set; }
+        public int ConnectionState { get; set; }
 
         public async Task GetFilteredListOffres (string title, int idTypePoste, int idTypeContrat, int idRegion, DateTime dateMin, DateTime dateMax, string desc, int descConfig, FilterOrderObject filterOrder)
         {

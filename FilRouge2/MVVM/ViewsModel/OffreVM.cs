@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FilRouge2
 {
-    class OffrePageVM : ViewModelBase
+    class OffreVM : ViewModelBase
     {
         public string Title
         {
@@ -48,22 +48,22 @@ namespace FilRouge2
             }
         }
 
-        public string DateMin
+        public string PublicationDate
         {
-            get { return OffreDataM.Instance.DateMin; }
+            get { return OffreDataM.Instance.PublicationDate; }
             set
             {
-                OffreDataM.Instance.DateMin = value;
+                OffreDataM.Instance.PublicationDate = value;
                 RaisepropertyChanged();
             }
         }
 
-        public string DateMax
+        public string LastEditionDate
         {
-            get { return OffreDataM.Instance.DateMax; }
+            get { return OffreDataM.Instance.LastEditionDate; }
             set
             {
-                OffreDataM.Instance.DateMax = value;
+                OffreDataM.Instance.LastEditionDate = value;
                 RaisepropertyChanged();
             }
         }

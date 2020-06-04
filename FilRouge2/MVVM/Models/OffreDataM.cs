@@ -36,8 +36,8 @@ namespace FilRouge2
         public string TypePosteTitle { get; set; }
         public string TypeContratTitle { get; set; }
         public string RegionName { get; set; }
-        public string DateMin { get; set; }
-        public string DateMax { get; set; }
+        public string PublicationDate { get; set; }
+        public string LastEditionDate { get; set; }
         public string Desc { get; set; }
         public string Url { get; set; }
     }

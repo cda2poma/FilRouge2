@@ -22,6 +22,8 @@ namespace FilRouge2
             set
             {
                 OffreDataM.Instance.Offre = value;
+                Title = value.TITRE;
+                SetSelectedOffre();
                 RaisepropertyChanged();
             }
         }
@@ -66,22 +68,22 @@ namespace FilRouge2
             }
         }
 
-        public string DateMin
+        public string PublishDate
         {
-            get { return OffreDataM.Instance.DateMin; }
+            get { return OffreDataM.Instance.PublicationDate; }
             set
             {
-                OffreDataM.Instance.DateMin = value;
+                OffreDataM.Instance.PublicationDate = value;
                 RaisepropertyChanged();
             }
         }
 
-        public string DateMax
+        public string LastEditionDate
         {
-            get { return OffreDataM.Instance.DateMax; }
+            get { return OffreDataM.Instance.LastEditionDate; }
             set
             {
-                OffreDataM.Instance.DateMax = value;
+                OffreDataM.Instance.LastEditionDate = value;
                 RaisepropertyChanged();
             }
         }
@@ -135,6 +137,14 @@ namespace FilRouge2
                 { ListOffres.OrderByDescending(t => t.DATEPUBLICATION); }
             }
             RaisepropertyChanged(nameof(SelectedOffre));
+        }
+
+        public void SetSelectedOffre()
+        {
+            TypePosteTitle = SelectedOffre.TYPEPOSTE.INTITULE;
+            TypeContratTitle = SelectedOffre.TYPECONTRAT.INTITULE;
+            RegionName = SelectedOffre.REGION.NOM;
+            
         }
     }
 }

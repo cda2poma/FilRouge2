@@ -31,6 +31,12 @@ namespace FilRouge2
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
+        { vm.UpdateListOffres(); }
+
+        private void ListOffres_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        { vm.SetSelectedOffre(); }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
 
         }

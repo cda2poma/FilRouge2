@@ -118,22 +118,32 @@ namespace FilRouge2
             }
         }
 
-        private bool _isConnecting;
+        private int _connectionState;
 
-        public bool IsConnecting
+        public int ConnectionState
         {
-            get { return ConnectionDataM.Instance.IsConnecting; }
+            get { return ConnectionDataM.Instance.ConnectionState; }
             set
             {
-                ConnectionDataM.Instance.IsConnecting = value;
+                ConnectionDataM.Instance.ConnectionState = value;
                 RaisepropertyChanged();
             }
         }
 
-        public async Task ConnectAsync()
+        public async Task<bool> ConnectAsync()
         {
-            IsConnecting = true;
-
+            ConnectionState = 1;
+            try
+            {
+                await ConnectionDataM.Instance.ConnectAsync("");
+                ConnectionState = 0;
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                ConnectionState = -1;
+                return false;
+            }
         }
 
         public void ResetData()
@@ -149,15 +159,19 @@ namespace FilRouge2
 
         public async Task<bool> FilterData()
         {
-            IsConnecting = true;
+            ConnectionState = 1;
             try
             {
                 await ConnectionDataM.Instance.GetFilteredListOffres(OffreTitle, SelectedTypePoste.ID, SelectedTypeContrat.ID, SelectedRegion.ID,
                     OffreDateMin, OffreDateMax, OffreDesc, DescConfig, SelectedFilterOrder);
+                ConnectionState = 0;
                 return true;
             }
-            catch
-            { return false; }
+            catch (InvalidOperationException)
+            {
+                ConnectionState = -1;
+                return false;
+            }
         }
     }
 }

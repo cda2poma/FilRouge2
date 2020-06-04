@@ -35,34 +35,14 @@ namespace FilRouge2
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            { await vm.ConnectAsync(); }
-            catch (Exception)
+            if (!await vm.ConnectAsync())
             {
-                TryReconnectContentDialog tryReconnectDialog = new TryReconnectContentDialog();
-                await tryReconnectDialog.ShowAsync();
-                if (tryReconnectDialog.TryReconnect == true)
-                { TryReconnect(tryReconnectDialog); }
-                else
+                await new ContentDialog()
                 {
-                    //close
-                }
-            }
-        }
-
-        private async void TryReconnect(TryReconnectContentDialog tryReconnectDialog)
-        {
-            try
-            { await vm.ConnectAsync(); }
-            catch (Exception)
-            {
-                await tryReconnectDialog.ShowAsync();
-                if (tryReconnectDialog.TryReconnect == true)
-                { TryReconnect(tryReconnectDialog); }
-                else
-                {
-                    //close
-                }
+                    Title = "Échec de la connexion au serveur",
+                    Content = "La connexion au serveur a échoué.",
+                    CloseButtonText = "Ok"
+                }.ShowAsync();
             }
         }
 
@@ -87,39 +67,15 @@ namespace FilRouge2
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
             if (await vm.FilterData())
-            {
-                Frame.Navigate(typeof(ListOffresPage));
-                vm.IsConnecting = false;
-            }
+            { Frame.Navigate(typeof(ListOffresPage)); }
             else
             {
-                TryReconnectContentDialog tryReconnectDialog = new TryReconnectContentDialog();
-                await tryReconnectDialog.ShowAsync();
-                if (tryReconnectDialog.TryReconnect == true)
-                { TryFilteringAgain(tryReconnectDialog); }
-                else
+                await new ContentDialog()
                 {
-                    //close
-                }
-            }
-        }
-
-        private async void TryFilteringAgain(TryReconnectContentDialog tryReconnectDialog)
-        {
-            if (await vm.FilterData())
-            { 
-                Frame.Navigate(typeof(ListOffresPage));
-                vm.IsConnecting = false;
-            }
-            else
-            {
-                await tryReconnectDialog.ShowAsync();
-                if (tryReconnectDialog.TryReconnect == true)
-                { TryFilteringAgain(tryReconnectDialog); }
-                else
-                {
-                    //close
-                }
+                    Title = "Échec de la connexion au serveur",
+                    Content = "La connexion au serveur a échoué.",
+                    CloseButtonText = "Ok"
+                }.ShowAsync();
             }
         }
     }
