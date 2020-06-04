@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -35,14 +36,19 @@ namespace FilRouge2
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!await vm.ConnectAsync())
+            vm.ConnectionState = 1;
+            if (await ConnectionDataM.Instance.ConnectAsync("https://localhost:44300/api/myhub/"))
+            { vm.ConnectionState = 0; }
+            else
             {
-                await new ContentDialog()
+                IAsyncOperation<ContentDialogResult> ShowContentDialog = new ContentDialog()
                 {
                     Title = "Échec de la connexion au serveur",
                     Content = "La connexion au serveur a échoué.",
                     CloseButtonText = "Ok"
                 }.ShowAsync();
+                vm.ConnectionState = -1;
+                await ShowContentDialog;
             }
         }
 
@@ -66,16 +72,27 @@ namespace FilRouge2
 
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            if (await vm.FilterData())
-            { Frame.Navigate(typeof(ListOffresPage)); }
-            else
+            if (!ConnectionDataM.Instance.ConnectionFailed)
             {
-                await new ContentDialog()
+                vm.ConnectionState = 1;
+                if (ConnectionDataM.Instance.ConnectionEstablished ? await vm.FilterData() : await ConnectionDataM.Instance.ConnectAsync("https://localhost:44300/api/myhub/"))
                 {
-                    Title = "Échec de la connexion au serveur",
-                    Content = "La connexion au serveur a échoué.",
-                    CloseButtonText = "Ok"
-                }.ShowAsync();
+                    Frame.Navigate(typeof(ListOffresPage));
+                    vm.ConnectionState = 0;
+                }
+                else
+                {
+                    ConnectionDataM.Instance.ConnectionFailed = true;
+                    IAsyncOperation<ContentDialogResult> ShowContentDialog = new ContentDialog()
+                    {
+                        Title = "Échec de la connexion au serveur",
+                        Content = "La connexion au serveur a échoué.",
+                        CloseButtonText = "Ok"
+                    }.ShowAsync();
+                    vm.ConnectionState = -1;
+                    await ShowContentDialog;
+                }
+                ConnectionDataM.Instance.ConnectionFailed = false;
             }
         }
     }

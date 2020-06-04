@@ -68,7 +68,7 @@ namespace FilRouge2
             }
         }
 
-        public string PublishDate
+        public string PublicationDate
         {
             get { return OffreDataM.Instance.PublicationDate; }
             set
@@ -144,7 +144,10 @@ namespace FilRouge2
             TypePosteTitle = SelectedOffre.TYPEPOSTE.INTITULE;
             TypeContratTitle = SelectedOffre.TYPECONTRAT.INTITULE;
             RegionName = SelectedOffre.REGION.NOM;
-            
+            PublicationDate = OffreDataM.Instance.GetStringFromDate(SelectedOffre.DATEPUBLICATION);
+            LastEditionDate = OffreDataM.Instance.GetStringFromDate(SelectedOffre.DATEDERNIEREMAJ);
+            Desc = SelectedOffre.TEXTEDESC;
+            Url = SelectedOffre.LIENWEB;
         }
     }
 }

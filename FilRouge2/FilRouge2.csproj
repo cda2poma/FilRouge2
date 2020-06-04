@@ -121,11 +121,12 @@
     </Compile>
     <Compile Include="MVVM\Models\ConnectionDataM.cs" />
     <Compile Include="MVVM\Models\RegionPreferenceM.cs" />
-    <Compile Include="MVVM\Views\BooleanToStringConverter.cs" />
-    <Compile Include="MVVM\Views\BooleanToVisibilityConverter.cs" />
     <Compile Include="MVVM\Models\FilterDataM.cs" />
     <Compile Include="MVVM\Models\OffreDataM.cs" />
     <Compile Include="MVVM\ViewsModel\ListOffresVM.cs" />
+    <Compile Include="MVVM\Views\IntToBooleanConverter.cs" />
+    <Compile Include="MVVM\Views\IntToVisibilityConverter.cs" />
+    <Compile Include="MVVM\Views\IntToStringConverter.cs" />
     <Compile Include="MVVM\Views\ListOffresPage.xaml.cs">
       <DependentUpon>ListOffresPage.xaml</DependentUpon>
     </Compile>

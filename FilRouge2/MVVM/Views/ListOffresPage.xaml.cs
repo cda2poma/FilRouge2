@@ -37,8 +37,9 @@ namespace FilRouge2
         { vm.SetSelectedOffre(); }
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
+        { Frame.Navigate(typeof(OffrePage)); }
 
-        }
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        { Frame.Navigate(typeof(MainPage)); }
     }
 }

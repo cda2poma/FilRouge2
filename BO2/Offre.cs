@@ -83,5 +83,31 @@ namespace BO
 
         public override string ToString()
         { return TITRE; }
+
+        public static bool operator ==(Offre offre1, Offre offre2)
+        {
+            if (offre1 == null)
+            { return offre2 == null; }
+            return offre1.Equals(offre2);
+        }
+
+        public static bool operator !=(Offre offre1, Offre offre2)
+        { return !(offre1 == offre2); }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !GetType().Equals(obj.GetType()))
+            { return false; }
+            else
+            {
+                Offre compare = (Offre)obj;
+                return ID == compare.ID && TITRE == compare.TITRE && TEXTEDESC == compare.TEXTEDESC && TYPEPOSTE.ID == compare.TYPEPOSTE.ID
+                    && TYPECONTRAT.ID == compare.TYPECONTRAT.ID && REGION.ID == compare.REGION.ID && DATEPUBLICATION == compare.DATEPUBLICATION
+                    && DATEDERNIEREMAJ == compare.DATEDERNIEREMAJ && LIENWEB == compare.LIENWEB;
+            }
+        }
+
+        public override int GetHashCode()
+        { return base.GetHashCode(); }
     }
 }

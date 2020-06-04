@@ -44,9 +44,11 @@ namespace FilRouge2
 
         public HubConnection HubConnect;
 
-        public bool TryReconnect;
+        public bool ConnectionEstablished;
 
-        public async Task ConnectAsync(string hubAddress)
+        public bool ConnectionFailed;
+
+        public async Task<bool> ConnectAsync(string hubAddress)
         {
             HubConnect = new HubConnectionBuilder().WithUrl(hubAddress)
                 .WithAutomaticReconnect()
@@ -65,9 +67,13 @@ namespace FilRouge2
             { UpdateTypePosteEvent(this, updatedTypePoste); });
 
             try
-            { await HubConnect.StartAsync(); }
-            catch (HttpRequestException e)
-            { Console.Error.WriteLine($"Server down: {e.Message}"); }
+            { 
+                await HubConnect.StartAsync();
+                ConnectionEstablished = true;
+                return true;
+            }
+            catch (HttpRequestException)
+            { return false; }
         }
 
         public int ConnectionState { get; set; }

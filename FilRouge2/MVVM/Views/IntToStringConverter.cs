@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
 namespace FilRouge2
 {
-    public class BooleanToStringConverter : DependencyObject, IValueConverter
+    class IntToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is bool && typeof(string) == targetType)
+            if (value is int i_value && typeof(string) == targetType)
             {
-                if ((bool)value)
-                { return "Connexion…"; }
+                if (i_value < 0)
+                { return "Retenter la connexion"; }
+                else if (i_value > 0)
+                { return "Connexion au serveur…"; }
                 else
-                { return "Filtrer"; }
+                { return "Filtrer les offres"; }
             }
             else
             { throw new InvalidCastException(); }
