@@ -12,8 +12,8 @@
     <Page.Resources>
         <local:IntToBooleanConverter x:Key="IntToBooleanConverter" IsRetryButton="false" IsReversed="false" AreThereTypesPosteInList="false"/>
         <local:IntToBooleanConverter x:Key="ReverseIntToBooleanConverter" IsRetryButton="false" IsReversed="true" AreThereTypesPosteInList="false"/>
-        <local:IntToBooleanConverter x:Key="RetryIntToBooleanConverter" IsRetryButton="true" IsReversed="false" AreThereTypesPosteInList="{Binding AreThereTypesPosteInList, Mode=TwoWay}"/>
-        <local:IntToStringConverter x:Key="IntToStringConverter" AreThereTypesPosteInList="{Binding AreThereTypesPosteInList, Mode=TwoWay}"/>
+        <local:IntToBooleanConverter x:Key="RetryIntToBooleanConverter" IsRetryButton="true" IsReversed="false" AreThereTypesPosteInList="{Binding AreThereTypesPosteInList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <local:IntToStringConverter x:Key="IntToStringConverter" AreThereTypesPosteInList="{Binding AreThereTypesPosteInList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <local:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
     </Page.Resources>
     

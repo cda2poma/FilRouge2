@@ -51,6 +51,7 @@ namespace FilRouge2
             }
         }
         public List<TypePoste> ListTypesPostes { get; set; }
+        public bool AreThereTypesPosteInList { get; set; }
         public List<TypeContrat> ListTypesContrats { get; set; }
         public List<RegionFrancaise> ListRegions { get; set; }
         public DateTime DateMin { get; set; }

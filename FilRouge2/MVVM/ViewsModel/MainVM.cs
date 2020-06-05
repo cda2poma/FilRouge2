@@ -57,7 +57,15 @@ namespace FilRouge2
             }
         }
 
-        public bool AreThereTypesPosteInList { get; set; }
+        public bool AreThereTypesPosteInList
+        { 
+            get { return FilterDataM.Instance.AreThereTypesPosteInList; }
+            set
+            {
+                FilterDataM.Instance.AreThereTypesPosteInList = value;
+                RaisepropertyChanged();
+            }
+        }
 
         private readonly ObservableCollection<TypeContrat> _listTypesContrat = new ObservableCollection<TypeContrat>();
 
