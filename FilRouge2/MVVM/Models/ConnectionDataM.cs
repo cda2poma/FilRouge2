@@ -40,6 +40,10 @@ namespace FilRouge2
 
         public event EventHandler<List<DTOoffre>> UpdateOffreEvent;
 
+        public event EventHandler<TypePoste> NewTypePosteEvent;
+
+        public event EventHandler<int> DeletedTypePosteEvent;
+
         public event EventHandler<TypePoste> UpdateTypePosteEvent;
 
         public HubConnection HubConnect;
@@ -47,6 +51,8 @@ namespace FilRouge2
         public bool ConnectionEstablished;
 
         public bool ConnectionFailed;
+
+        public bool ConnectionEstablishedButDataLoadingFailed;
 
         public async Task<bool> ConnectAsync(string hubAddress)
         {
@@ -63,6 +69,12 @@ namespace FilRouge2
             HubConnect.On<List<DTOoffre>>("UpdateOffreEvent", (updatedOffre) =>
             { UpdateOffreEvent(this, updatedOffre); });
 
+            HubConnect.On<TypePoste>("NewTypePosteEvent", (newTypePoste) =>
+            { NewTypePosteEvent(this, newTypePoste); });
+
+            HubConnect.On<int>("DeleteTypePosteEvent", (idTypePoste) =>
+            { DeletedTypePosteEvent(this, idTypePoste); });
+
             HubConnect.On<TypePoste>("UpdateTypePosteEvent", (updatedTypePoste) =>
             { UpdateTypePosteEvent(this, updatedTypePoste); });
 
@@ -72,11 +84,32 @@ namespace FilRouge2
                 ConnectionEstablished = true;
                 return true;
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException e)
             { return false; }
         }
 
         public int ConnectionState { get; set; }
+
+        public async Task<List<TypePoste>> GetAllTypesPostesPlusVoidValue()
+        {
+            FilterDataM.Instance.ListTypesPostes.Add(new TypePoste(0, "(Tous)", true));
+            FilterDataM.Instance.ListTypesPostes = FilterDataM.Instance.ListTypesPostes.Concat(await HubConnect.InvokeAsync<List<TypePoste>>("GetAllAssignatedTypesPostes")).ToList();
+            return FilterDataM.Instance.ListTypesPostes;
+        }
+
+        public async Task<List<TypeContrat>> GetAllTypesContratsPlusVoidValue()
+        {
+            FilterDataM.Instance.ListTypesContrats.Add(new TypeContrat(0, "(Tous)"));
+            FilterDataM.Instance.ListTypesContrats = FilterDataM.Instance.ListTypesContrats.Concat(await HubConnect.InvokeAsync<List<TypeContrat>>("GetAllTypesContrat")).ToList();
+            return FilterDataM.Instance.ListTypesContrats;
+        }
+
+        public async Task<List<RegionFrancaise>> GetAllRegionsPlusVoidValue()
+        {
+            FilterDataM.Instance.ListRegions.Add(new RegionFrancaise(0, "(Tous)"));
+            FilterDataM.Instance.ListRegions = FilterDataM.Instance.ListRegions.Concat(await HubConnect.InvokeAsync<List<RegionFrancaise>>("GetAllRegions")).ToList();
+            return FilterDataM.Instance.ListRegions;
+        }
 
         public async Task GetFilteredListOffres (string title, int idTypePoste, int idTypeContrat, int idRegion, DateTime dateMin, DateTime dateMax, string desc, int descConfig, FilterOrderObject filterOrder)
         {

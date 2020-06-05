@@ -13,7 +13,12 @@ namespace FilRouge2
         private static volatile FilterDataM instance;
         private static readonly object syncRoot = new object();
 
-        private FilterDataM() { }
+        private FilterDataM()
+        {
+            ListTypesPostes = new List<TypePoste>();
+            ListTypesContrats = new List<TypeContrat>();
+            ListRegions = new List<RegionFrancaise>();
+        }
 
         public static FilterDataM Instance
         {
@@ -45,6 +50,9 @@ namespace FilRouge2
                 MinDateChangeEvent(null, value);
             }
         }
+        public List<TypePoste> ListTypesPostes { get; set; }
+        public List<TypeContrat> ListTypesContrats { get; set; }
+        public List<RegionFrancaise> ListRegions { get; set; }
         public DateTime DateMin { get; set; }
         public DateTime DateMax { get; set; }
         public TypePoste TypePoste { get; set; }

@@ -1,10 +1,12 @@
 ﻿using BO;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.WebUI;
 
 namespace FilRouge2
 {
@@ -54,6 +56,8 @@ namespace FilRouge2
                 RaisepropertyChanged();
             }
         }
+
+        public bool AreThereTypesPosteInList { get; set; }
 
         private readonly ObservableCollection<TypeContrat> _listTypesContrat = new ObservableCollection<TypeContrat>();
 
@@ -137,8 +141,36 @@ namespace FilRouge2
             SelectedFilterOrder = _listFilterOrder[0];
         }
 
+        public async Task<bool> LoadData()
+        {
+            List<TypePoste> listTypesPostes = new List<TypePoste>();
+            List<TypeContrat> listTypesContrat = new List<TypeContrat>();
+            List<RegionFrancaise> listRegions = new List<RegionFrancaise>();
+            try
+            {
+                listTypesPostes = await ConnectionDataM.Instance.GetAllTypesPostesPlusVoidValue();
+                listTypesContrat = await ConnectionDataM.Instance.GetAllTypesContratsPlusVoidValue();
+                listRegions = await ConnectionDataM.Instance.GetAllRegionsPlusVoidValue();
+            }
+            catch (HubException)
+            {
+                ConnectionDataM.Instance.ConnectionEstablishedButDataLoadingFailed = true;
+                return false;
+            }
+            foreach (TypePoste typePoste in listTypesPostes)
+            { ListTypesPostes.Add(typePoste); }
+            AreThereTypesPosteInList = ListTypesPostes.Count > 1;
+            foreach (TypeContrat typeContrat in listTypesContrat)
+            { ListTypesContrat.Add(typeContrat); }
+            foreach (RegionFrancaise region in listRegions)
+            { ListRegions.Add(region); }
+            return true;
+        }
+
         public async Task<bool> FilterData()
         {
+            if (ConnectionDataM.Instance.ConnectionEstablishedButDataLoadingFailed)
+            { return await LoadData(); }
             try
             {
                 await ConnectionDataM.Instance.GetFilteredListOffres(OffreTitle, SelectedTypePoste.ID, SelectedTypeContrat.ID, SelectedRegion.ID,

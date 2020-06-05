@@ -23,6 +23,13 @@ namespace FilRouge2
             {
                 OffreDataM.Instance.Offre = value;
                 Title = value.TITRE;
+                TypePosteTitle = value.TYPEPOSTE.INTITULE;
+                TypeContratTitle = value.TYPECONTRAT.INTITULE;
+                RegionName = value.REGION.NOM;
+                PublicationDate = OffreDataM.Instance.GetStringFromDate(value.DATEPUBLICATION);
+                LastEditionDate = OffreDataM.Instance.GetStringFromDate(value.DATEDERNIEREMAJ);
+                Desc = value.TEXTEDESC;
+                Url = value.LIENWEB;
                 SetSelectedOffre();
                 RaisepropertyChanged();
             }

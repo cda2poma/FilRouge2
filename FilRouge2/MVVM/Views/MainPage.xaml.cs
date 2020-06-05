@@ -37,9 +37,12 @@ namespace FilRouge2
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             vm.ConnectionState = 1;
-            if (await ConnectionDataM.Instance.ConnectAsync("https://localhost:44300/api/myhub/"))
-            { vm.ConnectionState = 0; }
-            else
+            if (await ConnectionDataM.Instance.ConnectAsync("http://user20.2isa.org/api/myhub/"))
+            {
+                if (await vm.LoadData())
+                { vm.ConnectionState = 0; }
+            }
+            if (vm.ConnectionState != 0)
             {
                 IAsyncOperation<ContentDialogResult> ShowContentDialog = new ContentDialog()
                 {
@@ -75,12 +78,35 @@ namespace FilRouge2
             if (!ConnectionDataM.Instance.ConnectionFailed)
             {
                 vm.ConnectionState = 1;
-                if (ConnectionDataM.Instance.ConnectionEstablished ? await vm.FilterData() : await ConnectionDataM.Instance.ConnectAsync("https://localhost:44300/api/myhub/"))
+                if (ConnectionDataM.Instance.ConnectionEstablished)
                 {
-                    Frame.Navigate(typeof(ListOffresPage));
-                    vm.ConnectionState = 0;
+                    if (ConnectionDataM.Instance.ConnectionEstablishedButDataLoadingFailed)
+                    {
+                        if (await vm.LoadData())
+                        {
+                            ConnectionDataM.Instance.ConnectionEstablishedButDataLoadingFailed = false;
+                            vm.ConnectionState = 0;
+                        }
+                        else
+                        { vm.ConnectionState = -1; }
+                    }
+                    else
+                    {
+                        Frame.Navigate(typeof(ListOffresPage));
+                        vm.ConnectionState = 0;
+                    }
                 }
                 else
+                { 
+                    if (await ConnectionDataM.Instance.ConnectAsync("http://user20.2isa.org/api/myhub/"))
+                    {
+                        if (await vm.LoadData())
+                        { vm.ConnectionState = 0; }
+                        else
+                        { vm.ConnectionState = -1; }
+                    }
+                }
+                if (vm.ConnectionState != 0)
                 {
                     ConnectionDataM.Instance.ConnectionFailed = true;
                     IAsyncOperation<ContentDialogResult> ShowContentDialog = new ContentDialog()

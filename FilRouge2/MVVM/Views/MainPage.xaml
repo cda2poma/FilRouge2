@@ -10,10 +10,10 @@
     Loaded="Page_Loaded">
 
     <Page.Resources>
-        <local:IntToBooleanConverter x:Key="IntToBooleanConverter" IsRetryButton="false" IsReversed="false"/>
-        <local:IntToBooleanConverter x:Key="ReverseIntToBooleanConverter" IsRetryButton="false" IsReversed="true"/>
-        <local:IntToBooleanConverter x:Key="RetryIntToBooleanConverter" IsRetryButton="true" IsReversed="false"/>
-        <local:IntToStringConverter x:Key="IntToStringConverter"/>
+        <local:IntToBooleanConverter x:Key="IntToBooleanConverter" IsRetryButton="false" IsReversed="false" AreThereTypesPosteInList="false"/>
+        <local:IntToBooleanConverter x:Key="ReverseIntToBooleanConverter" IsRetryButton="false" IsReversed="true" AreThereTypesPosteInList="false"/>
+        <local:IntToBooleanConverter x:Key="RetryIntToBooleanConverter" IsRetryButton="true" IsReversed="false" AreThereTypesPosteInList="{Binding AreThereTypesPosteInList, Mode=TwoWay}"/>
+        <local:IntToStringConverter x:Key="IntToStringConverter" AreThereTypesPosteInList="{Binding AreThereTypesPosteInList, Mode=TwoWay}"/>
         <local:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
     </Page.Resources>
     
@@ -36,7 +36,8 @@
                 <RowDefinition x:Name="TitleDataRow"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="TitleLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(T)"/>
-            <TextBox Grid.Column="0" Grid.Row="1" x:Uid="TitleTextBox" Text="{Binding OffreTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource AutoSuggestBoxTextBoxStyle}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
+            <TextBox Grid.Column="0" Grid.Row="1" x:Uid="TitleTextBox" Text="{Binding OffreTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource AutoSuggestBoxTextBoxStyle}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
         </Grid>
         <Grid Name="FilterGridDateMin" Grid.Row="1">
             <Grid.RowDefinitions>
@@ -66,7 +67,7 @@
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="TypePosteLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(TP)"/>
             <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="TypeContratLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(TC)"/>
             <ComboBox Grid.Column="0" Grid.Row="1" x:Uid="TypePosteComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListTypesPostes}" SelectedItem="{Binding SelectedTypePoste, Mode=TwoWay}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
-            <ComboBox Grid.Column="1" Grid.Row="1" x:Uid="TypeContratComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListTypesontrat}" SelectedItem="{Binding SelectedTypeContrat, Mode=TwoWay}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" x:Uid="TypeContratComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListTypesContrat}" SelectedItem="{Binding SelectedTypeContrat, Mode=TwoWay}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
         </Grid>
         <Grid Name="FilterGridRegion" Grid.Row="4">
             <Grid.ColumnDefinitions>
@@ -74,14 +75,14 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition x:Name="RegionLabelRow"/>
-                <RowDefinition x:Name="RegionDataRow"/>
+                <RowDefinition x:Name="RegionChoiceColumn"/>
+                <RowDefinition x:Name="RegionPreferenceRegisterColumn"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="RegionLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(R)"/>
-            <Button Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0,0,12,3" x:Uid="RegionSetPreferences" Click="Button_Click_1" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}">
+            <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,12,12,3" x:Uid="RegionSetPreferences" Click="Button_Click_1" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}">
                 <TextBlock x:Uid="RegionSetPreferencesLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(Rsp)" HorizontalAlignment="Left" Width="33"/>
             </Button>
-            <ComboBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Uid="RegionComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListRegions}" SelectedItem="{Binding SelectedTypeContrat, Mode=TwoWay}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
+            <ComboBox Grid.Column="0" Grid.Row="1" x:Uid="RegionComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListRegions}" SelectedItem="{Binding SelectedTypeContrat, Mode=TwoWay}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
         </Grid>
         <Grid Name="FilterGridDesc" Grid.Row="5">
             <Grid.RowDefinitions>

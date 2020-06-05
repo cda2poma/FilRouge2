@@ -23,13 +23,25 @@ namespace FilRouge2
             get { return (bool)GetValue(isRetryButtonProperty); }
             set { SetValue(isRetryButtonProperty, value); }
         }
-        
+
+        public static readonly DependencyProperty areThereTypesPosteInListProperty = DependencyProperty.Register(nameof(AreThereTypesPosteInList), typeof(bool), typeof(IntToBooleanConverter), new PropertyMetadata(null));
+        public bool AreThereTypesPosteInList
+        {
+            get { return (bool)GetValue(areThereTypesPosteInListProperty); }
+            set { SetValue(areThereTypesPosteInListProperty, value); }
+        }
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is int i_value && typeof(bool) == targetType)
             {
                 if (i_value == 0)
-                { return IsReversed ? false : true; }
+                {
+                    if (!IsRetryButton || AreThereTypesPosteInList)
+                    { return IsReversed ? false : true; }
+                    else
+                    { return false; }
+                }
                 else if (i_value < 0 && IsRetryButton)
                 { return true; }
                 else
