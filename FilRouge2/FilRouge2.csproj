@@ -124,6 +124,8 @@
     <Compile Include="MVVM\Models\FilterDataM.cs" />
     <Compile Include="MVVM\Models\OffreDataM.cs" />
     <Compile Include="MVVM\ViewsModel\ListOffresVM.cs" />
+    <Compile Include="MVVM\Views\DateTimeToDateTimeOffsetConverter.cs" />
+    <Compile Include="MVVM\Views\DateTimeToStringConverter.cs" />
     <Compile Include="MVVM\Views\IntToBooleanConverter.cs" />
     <Compile Include="MVVM\Views\IntToVisibilityConverter.cs" />
     <Compile Include="MVVM\Views\IntToStringConverter.cs" />

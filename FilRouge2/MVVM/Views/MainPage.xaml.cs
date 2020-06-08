@@ -92,6 +92,7 @@ namespace FilRouge2
                     }
                     else
                     {
+                        await vm.FilterData();
                         Frame.Navigate(typeof(ListOffresPage));
                         vm.ConnectionState = 0;
                     }
@@ -121,5 +122,8 @@ namespace FilRouge2
                 ConnectionDataM.Instance.ConnectionFailed = false;
             }
         }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        { vm.UpdateDateTimePickerEnabling(); }
     }
 }

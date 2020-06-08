@@ -26,8 +26,8 @@ namespace FilRouge2
                 TypePosteTitle = value.TYPEPOSTE.INTITULE;
                 TypeContratTitle = value.TYPECONTRAT.INTITULE;
                 RegionName = value.REGION.NOM;
-                PublicationDate = OffreDataM.Instance.GetStringFromDate(value.DATEPUBLICATION);
-                LastEditionDate = OffreDataM.Instance.GetStringFromDate(value.DATEDERNIEREMAJ);
+                PublicationDate = value.DATEPUBLICATION;
+                LastEditionDate = (DateTime)value.DATEDERNIEREMAJ;
                 Desc = value.TEXTEDESC;
                 Url = value.LIENWEB;
                 SetSelectedOffre();
@@ -75,7 +75,7 @@ namespace FilRouge2
             }
         }
 
-        public string PublicationDate
+        public DateTime PublicationDate
         {
             get { return OffreDataM.Instance.PublicationDate; }
             set
@@ -85,7 +85,7 @@ namespace FilRouge2
             }
         }
 
-        public string LastEditionDate
+        public DateTime LastEditionDate
         {
             get { return OffreDataM.Instance.LastEditionDate; }
             set
@@ -151,8 +151,8 @@ namespace FilRouge2
             TypePosteTitle = SelectedOffre.TYPEPOSTE.INTITULE;
             TypeContratTitle = SelectedOffre.TYPECONTRAT.INTITULE;
             RegionName = SelectedOffre.REGION.NOM;
-            PublicationDate = OffreDataM.Instance.GetStringFromDate(SelectedOffre.DATEPUBLICATION);
-            LastEditionDate = OffreDataM.Instance.GetStringFromDate(SelectedOffre.DATEDERNIEREMAJ);
+            PublicationDate = SelectedOffre.DATEPUBLICATION;
+            LastEditionDate = (DateTime)SelectedOffre.DATEDERNIEREMAJ;
             Desc = SelectedOffre.TEXTEDESC;
             Url = SelectedOffre.LIENWEB;
         }

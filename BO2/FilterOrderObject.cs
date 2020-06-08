@@ -28,6 +28,11 @@ namespace BO
         /// </summary>
         [DataMember]
         public bool Asc { get; set; }
+        /// <summary>
+        /// The maximum number of job offers to get from a request.
+        /// </summary>
+        [DataMember]
+        public int? Limit { get; set; }
 
         /// <summary>
         /// Default constructor for serialization.
@@ -40,11 +45,13 @@ namespace BO
         /// <param name="desc">The description that appears in the ComboBox.</param>
         /// <param name="name">The name of the column affected in the SQL query.</param>
         /// <param name="asc">True if ASC, false if DESC.</param>
-        public FilterOrderObject(string desc, int columnNumber, bool asc)
+        /// <param name="limit">The maximum number of job offers to get from the request, if set.</param>
+        public FilterOrderObject(string desc, int columnNumber, bool asc, int? limit)
         {
             Desc = desc;
             ColumnNumber = columnNumber;
             Asc = asc;
+            Limit = limit;
         }
 
         /*public static bool operator ==(FilterOrderObject f1, FilterOrderObject f2)

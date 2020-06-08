@@ -11,6 +11,7 @@
     <Page.Resources>
         <local:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
         <local:StringToHyperLinkConverter x:Key="StringToHyperLinkConverter"/>
+        <local:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
     </Page.Resources>
 
     <Grid Name="OffrePreviewGrid" Margin="12,12,12,12">
@@ -39,8 +40,8 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="OffrePublishDateLabel" Style="{StaticResource BaseTextBlockStyle}" Text="Date de publication"/>
             <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="OffreEditDateLabel" Margin="3,0,0,0" Style="{StaticResource BaseTextBlockStyle}" Text="Dernière modification"/>
-            <TextBlock Grid.Column="0" Grid.Row="1" x:Uid="OffrePublishDate" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding DateMin, Mode=TwoWay}"/>
-            <TextBlock Grid.Column="1" Grid.Row="1" x:Uid="OffreEditDate" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding DateMax, Mode=Twoway}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" x:Uid="OffrePublishDate" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding DateMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToStringConverter}}"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" x:Uid="OffreEditDate" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding DateMax, Mode=Twoway, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToStringConverter}}"/>
         </Grid>
         <TextBlock Grid.Row="5" x:Uid="OffreDescPreview" Margin="2" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding Desc, Mode=TwoWay}"/>
         <Border Grid.Row="5" BorderBrush="Black" BorderThickness="1"/>

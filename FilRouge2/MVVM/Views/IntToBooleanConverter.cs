@@ -31,13 +31,22 @@ namespace FilRouge2
             set { SetValue(areThereTypesPosteInListProperty, value); }
         }
 
+        public static readonly DependencyProperty isFilterLimitNull = DependencyProperty.Register(nameof(IsFilterLimitNull), typeof(bool), typeof(IntToBooleanConverter), new PropertyMetadata(null));
+        public bool IsFilterLimitNull
+        {
+            get { return (bool)GetValue(isFilterLimitNull); }
+            set { SetValue(isFilterLimitNull, value); }
+        }
+
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is int i_value && typeof(bool) == targetType)
             {
                 if (i_value == 0)
                 {
-                    if (!IsRetryButton || AreThereTypesPosteInList)
+                    if (!IsFilterLimitNull)
+                    { return false; }
+                    else if ((!IsRetryButton || AreThereTypesPosteInList))
                     { return IsReversed ? false : true; }
                     else
                     { return false; }

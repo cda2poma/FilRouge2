@@ -32,6 +32,21 @@ namespace FilRouge2
             }
         }
 
+        public DateTime MinChoosableDate
+        {
+            get { return FilterDataM.Instance.MinChoosableDate; }
+            set
+            {
+                FilterDataM.Instance.MinChoosableDate = value;
+                RaisepropertyChanged();
+            }
+        }
+
+        private bool suscribedMinChoosableDate;
+
+        public DateTime MaxChoosableDate
+        { get { return DateTime.Today; } }
+
         public DateTime OffreDateMax
         {
             get { return FilterDataM.Instance.DateMax; }
@@ -118,6 +133,16 @@ namespace FilRouge2
             }
         }
 
+        public bool IsFilterLimitNull
+        {
+            get { return FilterDataM.Instance.IsFilterLimitNull; }
+            set
+            {
+                FilterDataM.Instance.IsFilterLimitNull = value;
+                RaisepropertyChanged();
+            }
+        }
+
         public string OffreDesc
         {
             get { return FilterDataM.Instance.Desc; }
@@ -154,17 +179,24 @@ namespace FilRouge2
             List<TypePoste> listTypesPostes = new List<TypePoste>();
             List<TypeContrat> listTypesContrat = new List<TypeContrat>();
             List<RegionFrancaise> listRegions = new List<RegionFrancaise>();
+            if (!suscribedMinChoosableDate)
+            {
+                FilterDataM.Instance.MinDateChangeEvent += UpdateMinChoosableDate;
+                suscribedMinChoosableDate = true;
+            }
             try
             {
                 listTypesPostes = await ConnectionDataM.Instance.GetAllTypesPostesPlusVoidValue();
                 listTypesContrat = await ConnectionDataM.Instance.GetAllTypesContratsPlusVoidValue();
                 listRegions = await ConnectionDataM.Instance.GetAllRegionsPlusVoidValue();
+                await ConnectionDataM.Instance.GetMinDate();
             }
             catch (HubException)
             {
                 ConnectionDataM.Instance.ConnectionEstablishedButDataLoadingFailed = true;
                 return false;
             }
+            OffreDateMax = MaxChoosableDate;
             foreach (TypePoste typePoste in listTypesPostes)
             { ListTypesPostes.Add(typePoste); }
             AreThereTypesPosteInList = ListTypesPostes.Count > 1;
@@ -172,7 +204,26 @@ namespace FilRouge2
             { ListTypesContrat.Add(typeContrat); }
             foreach (RegionFrancaise region in listRegions)
             { ListRegions.Add(region); }
+            ListFilterOrder.Add(new FilterOrderObject("Du plus récent au plus ancien", 6, false, null));
+            ListFilterOrder.Add(new FilterOrderObject("Du plus ancien au plus récent", 6, true, null));
+            ListFilterOrder.Add(new FilterOrderObject("Ordre alphabétique", 1, false, null));
+            ListFilterOrder.Add(new FilterOrderObject("Du Ordre alphabétique inversé", 1, true, null));
+            ListFilterOrder.Add(new FilterOrderObject("Dix dernières offres", 6, false, 10));
+            SelectedTypePoste = ListTypesPostes[0];
+            SelectedTypeContrat = ListTypesContrat[0];
+            SelectedRegion = ListRegions[0];
+            SelectedFilterOrder = ListFilterOrder[0];
             return true;
+        }
+
+        private void UpdateMinChoosableDate(object sender, DateTime e)
+        {
+            if (OffreDateMax < e)
+            { OffreDateMax = e; }
+            if (OffreDateMin < e)
+            { OffreDateMin = e; }
+            if (MinChoosableDate < e)
+            { MinChoosableDate = e; }
         }
 
         public async Task<bool> FilterData()
@@ -182,11 +233,17 @@ namespace FilRouge2
             try
             {
                 await ConnectionDataM.Instance.GetFilteredListOffres(OffreTitle, SelectedTypePoste.ID, SelectedTypeContrat.ID, SelectedRegion.ID,
-                    OffreDateMin, OffreDateMax, OffreDesc, DescConfig, SelectedFilterOrder);
+                    (DateTime)OffreDateMin, (DateTime)OffreDateMax, OffreDesc, DescConfig, SelectedFilterOrder);
                 return true;
             }
             catch (InvalidOperationException)
             { return false; }
+        }
+
+        public void UpdateDateTimePickerEnabling()
+        {
+            IsFilterLimitNull = SelectedFilterOrder.Limit == null;
+            RaisepropertyChanged(nameof(ConnectionState));
         }
     }
 }

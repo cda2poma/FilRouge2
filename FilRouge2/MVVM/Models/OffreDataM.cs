@@ -12,7 +12,8 @@ namespace FilRouge2
         private static volatile OffreDataM instance;
         private static readonly object syncRoot = new object();
 
-        private OffreDataM() { }
+        private OffreDataM()
+        { ListOffres = new List<Offre>(); }
 
         public static OffreDataM Instance
         {
@@ -36,8 +37,8 @@ namespace FilRouge2
         public string TypePosteTitle { get; set; }
         public string TypeContratTitle { get; set; }
         public string RegionName { get; set; }
-        public string PublicationDate { get; set; }
-        public string LastEditionDate { get; set; }
+        public DateTime PublicationDate { get; set; }
+        public DateTime LastEditionDate { get; set; }
         public string Desc { get; set; }
         public string Url { get; set; }
 

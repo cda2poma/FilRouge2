@@ -90,7 +90,13 @@ namespace FilRouge2
 
         public int ConnectionState { get; set; }
 
-        public async Task<List<TypePoste>> GetAllTypesPostesPlusVoidValue()
+        public async Task<DateTime> GetMinDate()
+        {
+            FilterDataM.Instance.MinChoosableDate = await HubConnect.InvokeAsync<DateTime>("GetMinDate");
+            return FilterDataM.Instance.MinChoosableDate;
+        }
+
+    public async Task<List<TypePoste>> GetAllTypesPostesPlusVoidValue()
         {
             FilterDataM.Instance.ListTypesPostes.Add(new TypePoste(0, "(Tous)", true));
             FilterDataM.Instance.ListTypesPostes = FilterDataM.Instance.ListTypesPostes.Concat(await HubConnect.InvokeAsync<List<TypePoste>>("GetAllAssignatedTypesPostes")).ToList();
@@ -114,13 +120,13 @@ namespace FilRouge2
         public async Task GetFilteredListOffres (string title, int idTypePoste, int idTypeContrat, int idRegion, DateTime dateMin, DateTime dateMax, string desc, int descConfig, FilterOrderObject filterOrder)
         {
             DTOfilter filter = new DTOfilter();
-            filter.TITRE = title;
+            filter.TITRE = title == null ? "" : title;
             filter.IDTYPEPOSTE = idTypePoste;
             filter.IDTYPECONTRAT = idTypeContrat;
             filter.IDREGION = idRegion;
             filter.DATEPUBLICATIONMIN = dateMin;
             filter.DATEPUBLICATIONMAX = dateMax;
-            filter.DESC = desc;
+            filter.DESC = desc == null ? "" : desc;
             filter.DescConfig = descConfig;
             filter.FilterOrder = filterOrder;
             OffreDataM.Instance.ListOffres = FilterDataM.Instance.DataTransferFilterIsDefault(filter) ? await GetAllOffres() : await GetOffresByCriteria(filter);

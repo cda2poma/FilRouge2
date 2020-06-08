@@ -48,7 +48,7 @@ namespace FilRouge2
             }
         }
 
-        public string PublicationDate
+        public DateTime PublicationDate
         {
             get { return OffreDataM.Instance.PublicationDate; }
             set
@@ -58,7 +58,7 @@ namespace FilRouge2
             }
         }
 
-        public string LastEditionDate
+        public DateTime LastEditionDate
         {
             get { return OffreDataM.Instance.LastEditionDate; }
             set

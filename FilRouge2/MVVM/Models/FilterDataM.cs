@@ -18,6 +18,7 @@ namespace FilRouge2
             ListTypesPostes = new List<TypePoste>();
             ListTypesContrats = new List<TypeContrat>();
             ListRegions = new List<RegionFrancaise>();
+            ListFilterOrder = new List<FilterOrderObject>();
         }
 
         public static FilterDataM Instance
@@ -47,13 +48,14 @@ namespace FilRouge2
             set
             {
                 _minChoosableDate = value;
-                MinDateChangeEvent(null, value);
+                MinDateChangeEvent(this, value);
             }
         }
         public List<TypePoste> ListTypesPostes { get; set; }
         public bool AreThereTypesPosteInList { get; set; }
         public List<TypeContrat> ListTypesContrats { get; set; }
         public List<RegionFrancaise> ListRegions { get; set; }
+        public List<FilterOrderObject> ListFilterOrder { get; set; }
         public DateTime DateMin { get; set; }
         public DateTime DateMax { get; set; }
         public TypePoste TypePoste { get; set; }
@@ -62,6 +64,7 @@ namespace FilRouge2
         public string Desc { get; set; }
         public int DescConfig { get; set; }
         public FilterOrderObject FilterOrder { get; set; }
+        public bool IsFilterLimitNull { get; set; }
 
         public bool DataTransferFilterIsDefault(DTOfilter filter)
         {
@@ -70,6 +73,6 @@ namespace FilRouge2
         }
 
         private bool FilterOrderObjectIsDefault(FilterOrderObject filter)
-        { return filter.ColumnNumber == 6 && filter.Asc == false; }
+        { return filter.ColumnNumber == 6 && filter.Asc == false && filter.Limit == null; }
     }
 }

@@ -10,13 +10,15 @@
     Loaded="Page_Loaded">
 
     <Page.Resources>
-        <local:IntToBooleanConverter x:Key="IntToBooleanConverter" IsRetryButton="false" IsReversed="false" AreThereTypesPosteInList="false"/>
-        <local:IntToBooleanConverter x:Key="ReverseIntToBooleanConverter" IsRetryButton="false" IsReversed="true" AreThereTypesPosteInList="false"/>
-        <local:IntToBooleanConverter x:Key="RetryIntToBooleanConverter" IsRetryButton="true" IsReversed="false" AreThereTypesPosteInList="{Binding AreThereTypesPosteInList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <local:IntToBooleanConverter x:Key="IntToBooleanConverter" IsRetryButton="false" IsReversed="false" AreThereTypesPosteInList="false" IsFilterLimitNull="true"/>
+        <local:IntToBooleanConverter x:Key="DateIntToBooleanConverter" IsRetryButton="false" IsReversed="false" AreThereTypesPosteInList="false" IsFilterLimitNull="{Binding IsFilterLimitNull, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <local:IntToBooleanConverter x:Key="ReverseIntToBooleanConverter" IsRetryButton="false" IsReversed="true" AreThereTypesPosteInList="false" IsFilterLimitNull="true"/>
+        <local:IntToBooleanConverter x:Key="RetryIntToBooleanConverter" IsRetryButton="true" IsReversed="false" AreThereTypesPosteInList="{Binding AreThereTypesPosteInList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsFilterLimitNull="true"/>
         <local:IntToStringConverter x:Key="IntToStringConverter" AreThereTypesPosteInList="{Binding AreThereTypesPosteInList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <local:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
+        <local:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter"/>
     </Page.Resources>
-    
+
     <Grid Name="MainGrid"
        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="12,12,12,12">
         <Grid.RowDefinitions>
@@ -45,15 +47,27 @@
                 <RowDefinition x:Name="DateMinDataRow"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="DateMinLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(DMin)"/>
-            <DatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMinPicker" Date="{Binding OffreDateMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
+            <CalendarDatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMinPicker"
+                                Date="{Binding OffreDateMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
+                                DateFormat="{}{day.integer} {month.full} {year.full}" MinDate="{Binding MinChoosableDate,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                MaxDate="{Binding MaxChoosableDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
+                                IsEnabled="{Binding ConnectionState, Converter={StaticResource DateIntToBooleanConverter}}"/>
         </Grid>
         <Grid Name="FilterGridDateMax" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="47*"/>
+                <ColumnDefinition Width="37*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="DateMaxLabelRow"/>
                 <RowDefinition x:Name="DateMaxDataRow"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="DateMaxLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(DMax)"/>
-            <DatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMaxPicker" Date="{Binding OffreDateMax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
+            <TextBlock Grid.Column="0" x:Uid="DateMaxLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(DMax)" Grid.ColumnSpan="2"/>
+            <CalendarDatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMaxPicker"
+                                Date="{Binding OffreDateMax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
+                                DateFormat="{}{day.integer} {month.full} {year.full}" MinDate="{Binding MinChoosableDate,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                MaxDate="{Binding MaxChoosableDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
+                                IsEnabled="{Binding ConnectionState, Converter={StaticResource DateIntToBooleanConverter}}"/>
         </Grid>
         <Grid Name="FilterGridTypes" Grid.Row="3">
             <Grid.ColumnDefinitions>
@@ -66,8 +80,8 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="TypePosteLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(TP)"/>
             <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="TypeContratLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(TC)"/>
-            <ComboBox Grid.Column="0" Grid.Row="1" x:Uid="TypePosteComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListTypesPostes}" SelectedItem="{Binding SelectedTypePoste, Mode=TwoWay}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
-            <ComboBox Grid.Column="1" Grid.Row="1" x:Uid="TypeContratComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListTypesContrat}" SelectedItem="{Binding SelectedTypeContrat, Mode=TwoWay}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
+            <ComboBox Grid.Column="0" Grid.Row="1" x:Uid="TypePosteComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListTypesPostes}" SelectedItem="{Binding SelectedTypePoste, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" x:Uid="TypeContratComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListTypesContrat}" SelectedItem="{Binding SelectedTypeContrat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
         </Grid>
         <Grid Name="FilterGridRegion" Grid.Row="4">
             <Grid.ColumnDefinitions>
@@ -82,7 +96,7 @@
             <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,12,12,3" x:Uid="RegionSetPreferences" Click="Button_Click_1" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}">
                 <TextBlock x:Uid="RegionSetPreferencesLabel" Style="{StaticResource BaseTextBlockStyle}" Text="(Rsp)" HorizontalAlignment="Left" Width="33"/>
             </Button>
-            <ComboBox Grid.Column="0" Grid.Row="1" x:Uid="RegionComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListRegions}" SelectedItem="{Binding SelectedTypeContrat, Mode=TwoWay}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
+            <ComboBox Grid.Column="0" Grid.Row="1" x:Uid="RegionComboBox" HorizontalAlignment="Stretch" Margin="0,0,12,0" ItemsSource="{Binding ListRegions}" SelectedItem="{Binding SelectedRegion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
         </Grid>
         <Grid Name="FilterGridDesc" Grid.Row="5">
             <Grid.RowDefinitions>
@@ -118,7 +132,7 @@
                 <RowDefinition x:Name="FilterOrderDataRow"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="OrderLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(O)"/>
-            <ComboBox Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" x:Uid="OrderComboBox" ItemsSource="{Binding ListRegion}" SelectedItem="{Binding SelectedFilterOrder, Mode=TwoWay}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}"/>
+            <ComboBox Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" x:Uid="OrderComboBox" ItemsSource="{Binding ListFilterOrder}" SelectedItem="{Binding SelectedFilterOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}" SelectionChanged="ComboBox_SelectionChanged"/>
             <Button Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="ResetButton" Margin="8,8,0,2" Click="Button_Click" IsEnabled="{Binding ConnectionState, Converter={StaticResource IntToBooleanConverter}}">
                 <TextBlock x:Uid="ResetButtonLabel" Text="(Reset)"/>
             </Button>
