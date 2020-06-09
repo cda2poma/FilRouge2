@@ -143,7 +143,7 @@ namespace FilRouge2
                 else
                 { ListOffres.OrderByDescending(t => t.DATEPUBLICATION); }
             }
-            RaisepropertyChanged(nameof(SelectedOffre));
+            SelectedOffre = ListOffres[0];
         }
 
         public void SetSelectedOffre()

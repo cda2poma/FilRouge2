@@ -40,17 +40,19 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="OffrePublishDateLabel" Style="{StaticResource BaseTextBlockStyle}" Text="Date de publication"/>
             <TextBlock Grid.Column="1" Grid.Row="0" x:Uid="OffreEditDateLabel" Margin="3,0,0,0" Style="{StaticResource BaseTextBlockStyle}" Text="Dernière modification"/>
-            <TextBlock Grid.Column="0" Grid.Row="1" x:Uid="OffrePublishDate" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding DateMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToStringConverter}}"/>
-            <TextBlock Grid.Column="1" Grid.Row="1" x:Uid="OffreEditDate" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding DateMax, Mode=Twoway, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToStringConverter}}"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" x:Uid="OffrePublishDate" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding PublicationDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToStringConverter}}"/>
+            <TextBlock Grid.Column="1" Grid.Row="1" x:Uid="OffreEditDate" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding LastEditionDate, Mode=Twoway, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToStringConverter}}"/>
         </Grid>
-        <TextBlock Grid.Row="5" x:Uid="OffreDescPreview" Margin="2" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding Desc, Mode=TwoWay}"/>
+        <ScrollViewer Grid.Row="5">
+            <TextBlock x:Uid="OffreDescPreview" Margin="2" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding Desc, Mode=TwoWay}"/>
+        </ScrollViewer>
         <Border Grid.Row="5" BorderBrush="Black" BorderThickness="1"/>
         <TextBlock Grid.Row="6">
                 <Hyperlink>
                     <Run Text="{Binding Url, Mode=TwoWay}"/>
                 </Hyperlink>
         </TextBlock>
-        <Button Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="GoBackButton" Height="37">
+        <Button Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Uid="GoBackButton" Height="37" Click="Button_Click">
             <TextBlock x:Uid="GoBackButtonLabel" Style="{StaticResource BaseTextBlockStyle}" Text="Retour"/>
         </Button>
     </Grid>

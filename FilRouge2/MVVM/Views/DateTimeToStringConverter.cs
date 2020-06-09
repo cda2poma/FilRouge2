@@ -13,7 +13,7 @@ namespace FilRouge2
         {
             if (value is DateTime value_d && typeof(string) == targetType)
             {
-                StringBuilder sb = new StringBuilder($"{value_d.Day}");
+                StringBuilder sb = new StringBuilder($"{value_d.Day}{(value_d.Day == 1 ? "er " : " ")}");
                 switch (value_d.Month)
                 {
                     case 1:

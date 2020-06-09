@@ -19,8 +19,8 @@ namespace FilRouge2
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            if (value is DateTime value_do && typeof(DateTime) == targetType)
-            { return ((DateTimeOffset)value).DateTime; }
+            if (value is DateTimeOffset value_d && typeof(object) == targetType)
+            { return value_d.DateTime; }
             else
             { throw new InvalidCastException(); }
         }

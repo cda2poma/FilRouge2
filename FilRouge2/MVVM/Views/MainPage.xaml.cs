@@ -40,7 +40,9 @@ namespace FilRouge2
             if (await ConnectionDataM.Instance.ConnectAsync("http://user20.2isa.org/api/myhub/"))
             {
                 if (await vm.LoadData())
-                { vm.ConnectionState = 0; }
+                { 
+                    vm.ConnectionState = 0;
+                }
             }
             if (vm.ConnectionState != 0)
             {
