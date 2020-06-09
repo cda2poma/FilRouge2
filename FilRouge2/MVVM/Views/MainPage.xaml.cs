@@ -36,24 +36,35 @@ namespace FilRouge2
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            vm.ConnectionState = 1;
-            if (await ConnectionDataM.Instance.ConnectAsync("http://user20.2isa.org/api/myhub/"))
+            if (!ConnectionDataM.Instance.ConnectionEstablished)
             {
-                if (await vm.LoadData())
-                { 
-                    vm.ConnectionState = 0;
+                vm.ConnectionState = 1;
+                if (await ConnectionDataM.Instance.ConnectAsync("http://user20.2isa.org/api/myhub/"))
+                {
+                    if (await vm.LoadData())
+                    {
+                        vm.ConnectionState = 0;
+                    }
+                }
+                if (vm.ConnectionState != 0)
+                {
+                    IAsyncOperation<ContentDialogResult> ShowContentDialog = new ContentDialog()
+                    {
+                        Title = "Échec de la connexion au serveur",
+                        Content = "La connexion au serveur a échoué.",
+                        CloseButtonText = "Ok"
+                    }.ShowAsync();
+                    vm.ConnectionState = -1;
+                    await ShowContentDialog;
                 }
             }
-            if (vm.ConnectionState != 0)
-            {
-                IAsyncOperation<ContentDialogResult> ShowContentDialog = new ContentDialog()
-                {
-                    Title = "Échec de la connexion au serveur",
-                    Content = "La connexion au serveur a échoué.",
-                    CloseButtonText = "Ok"
-                }.ShowAsync();
-                vm.ConnectionState = -1;
-                await ShowContentDialog;
+            else
+            { 
+                vm.ReloadData();
+                if (FilterDataM.Instance.DescConfig == 0)
+                { RadioButton_AllWords.IsChecked = true; }
+                else if (FilterDataM.Instance.DescConfig > 0)
+                { RadioButton_ExactExpression.IsChecked = true; }
             }
         }
 
@@ -64,13 +75,16 @@ namespace FilRouge2
         }
 
         private void RadioButton_Checked_ExactExpression(object sender, RoutedEventArgs e)
-        { vm.DescConfig = 1; }
+        { FilterDataM.Instance.DescConfig = 1; }
 
         private void RadioButton_Checked_AllWords(object sender, RoutedEventArgs e)
-        { vm.DescConfig = 0; }
+        { FilterDataM.Instance.DescConfig = 0; }
 
         private void RadioButton_Checked_AnyWord(object sender, RoutedEventArgs e)
-        { vm.DescConfig = -1; }
+        {
+            if (!FilterDataM.Instance.ReloadingPage)
+            { FilterDataM.Instance.DescConfig = -1; }
+        }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         { RegionPreferenceM.Instance.Save(vm.SelectedRegion); }
@@ -127,5 +141,11 @@ namespace FilRouge2
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         { vm.UpdateDateTimePickerEnabling(); }
+
+        private void CalendarDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        { vm.MaxMinChoosableDate = ((DateTimeOffset)(args.NewDate)).DateTime; }
+
+        private void CalendarDatePicker_DateChanged1(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        { vm.MinMaxChoosableDate = ((DateTimeOffset)(args.NewDate)).DateTime; }
     }
 }

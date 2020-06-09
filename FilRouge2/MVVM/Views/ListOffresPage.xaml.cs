@@ -40,6 +40,9 @@ namespace FilRouge2
         { Frame.Navigate(typeof(OffrePage)); }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
-        { Frame.Navigate(typeof(MainPage)); }
+        {
+            FilterDataM.Instance.ReloadingPage = true;
+            Frame.Navigate(typeof(MainPage));
+        }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.WebUI;
@@ -32,20 +33,25 @@ namespace FilRouge2
             }
         }
 
-        public DateTime MinChoosableDate
+        public DateTime MinMinChoosableDate
         {
-            get { return FilterDataM.Instance.MinChoosableDate; }
+            get { return FilterDataM.Instance.MinMinChoosableDate; }
             set
             {
-                FilterDataM.Instance.MinChoosableDate = value;
+                FilterDataM.Instance.MinMinChoosableDate = value;
                 RaisepropertyChanged();
             }
         }
 
-        private bool suscribedMinChoosableDate;
-
-        public DateTime MaxChoosableDate
-        { get { return DateTime.Today; } }
+        public DateTime MinMaxChoosableDate
+        {
+            get { return FilterDataM.Instance.MinMaxChoosableDate; }
+            set
+            {
+                FilterDataM.Instance.MinMaxChoosableDate = value;
+                RaisepropertyChanged();
+            }
+        }
 
         public DateTime OffreDateMax
         {
@@ -53,6 +59,26 @@ namespace FilRouge2
             set
             {
                 FilterDataM.Instance.DateMax = value;
+                RaisepropertyChanged();
+            }
+        }
+
+        public DateTime MaxMinChoosableDate
+        {
+            get { return FilterDataM.Instance.MaxMinChoosableDate; }
+            set
+            {
+                FilterDataM.Instance.MaxMinChoosableDate = value;
+                RaisepropertyChanged();
+            }
+        }
+
+        public DateTime MaxMaxChoosableDate
+        { 
+            get { return FilterDataM.Instance.MaxMaxChoosableDate; }
+            set
+            {
+                FilterDataM.Instance.MaxMaxChoosableDate = value;
                 RaisepropertyChanged();
             }
         }
@@ -112,12 +138,6 @@ namespace FilRouge2
             }
         }
 
-        public int DescConfig
-        {
-            get { return FilterDataM.Instance.DescConfig; }
-            set { FilterDataM.Instance.DescConfig = value; }
-        }
-
         private readonly ObservableCollection<FilterOrderObject> _listFilterOrder = new ObservableCollection<FilterOrderObject>();
 
         public ObservableCollection<FilterOrderObject> ListFilterOrder
@@ -166,7 +186,7 @@ namespace FilRouge2
         public void ResetData()
         {
             OffreTitle = "";
-            OffreDateMin = FilterDataM.Instance.MinChoosableDate;
+            OffreDateMin = FilterDataM.Instance.MinMinChoosableDate;
             OffreDateMax = DateTime.Today;
             SelectedTypePoste = _listTypesPostes[0];
             SelectedTypeContrat = _listTypesContrat[0];
@@ -176,14 +196,15 @@ namespace FilRouge2
 
         public async Task<bool> LoadData()
         {
+            OffreDateMin = DateTime.Today;
+            OffreDateMax = DateTime.Today;
+            MinMinChoosableDate = DateTime.Today;
+            MinMaxChoosableDate = DateTime.Today;
+            MaxMinChoosableDate = DateTime.Today;
+            MaxMaxChoosableDate = DateTime.Today;
             List<TypePoste> listTypesPostes = new List<TypePoste>();
             List<TypeContrat> listTypesContrat = new List<TypeContrat>();
             List<RegionFrancaise> listRegions = new List<RegionFrancaise>();
-            if (!suscribedMinChoosableDate)
-            {
-                FilterDataM.Instance.MinDateChangeEvent += UpdateMinChoosableDate;
-                suscribedMinChoosableDate = true;
-            }
             try
             {
                 listTypesPostes = await ConnectionDataM.Instance.GetAllTypesPostesPlusVoidValue();
@@ -196,7 +217,8 @@ namespace FilRouge2
                 ConnectionDataM.Instance.ConnectionEstablishedButDataLoadingFailed = true;
                 return false;
             }
-            OffreDateMax = MaxChoosableDate;
+            MinMinChoosableDate = FilterDataM.Instance.MinMinChoosableDate;
+            OffreDateMin = MinMinChoosableDate;
             foreach (TypePoste typePoste in listTypesPostes)
             { ListTypesPostes.Add(typePoste); }
             AreThereTypesPosteInList = ListTypesPostes.Count > 1;
@@ -211,19 +233,83 @@ namespace FilRouge2
             ListFilterOrder.Add(new FilterOrderObject("Dix dernières offres", 6, false, 10));
             SelectedTypePoste = ListTypesPostes[0];
             SelectedTypeContrat = ListTypesContrat[0];
-            SelectedRegion = ListRegions[0];
+            int index = 0;
+            if (RegionPreferenceM.Instance.PreferedRegion != null)
+            {
+                for (int i = 0; i < ListRegions.Count; i++)
+                {
+                    if (ListRegions[i].ID == RegionPreferenceM.Instance.PreferedRegion.ID)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+            SelectedRegion = ListRegions[index];
             SelectedFilterOrder = ListFilterOrder[0];
+            ConnectionDataM.Instance.NewOffreEvent += NewOffreEvent;
+            ConnectionDataM.Instance.DeletedOffreEvent += DeletedOffreEvent;
+            ConnectionDataM.Instance.UpdateOffreEvent += UpdateOffreEvent;
+            ConnectionDataM.Instance.UpdateTypePosteEvent += UpdateTypePosteEvent;
             return true;
         }
 
-        private void UpdateMinChoosableDate(object sender, DateTime e)
+        public void ReloadData()
         {
-            if (OffreDateMax < e)
-            { OffreDateMax = e; }
-            if (OffreDateMin < e)
-            { OffreDateMin = e; }
-            if (MinChoosableDate < e)
-            { MinChoosableDate = e; }
+            OffreTitle = FilterDataM.Instance.Title;
+            OffreDateMin = FilterDataM.Instance.DateMin;
+            OffreDateMax = FilterDataM.Instance.DateMax;
+            MinMinChoosableDate = FilterDataM.Instance.MinMinChoosableDate;
+            MinMaxChoosableDate = FilterDataM.Instance.MinMaxChoosableDate;
+            MaxMinChoosableDate = FilterDataM.Instance.MinMaxChoosableDate;
+            MaxMaxChoosableDate = FilterDataM.Instance.MinMaxChoosableDate;
+            foreach (TypePoste typePoste in FilterDataM.Instance.ListTypesPostes)
+            { ListTypesPostes.Add(typePoste); }
+            AreThereTypesPosteInList = ListTypesPostes.Count > 1;
+            foreach (TypeContrat typeContrat in FilterDataM.Instance.ListTypesContrats)
+            { ListTypesContrat.Add(typeContrat); }
+            foreach (RegionFrancaise region in FilterDataM.Instance.ListRegions)
+            { ListRegions.Add(region); }
+            ListFilterOrder.Add(new FilterOrderObject("Du plus récent au plus ancien", 6, false, null));
+            ListFilterOrder.Add(new FilterOrderObject("Du plus ancien au plus récent", 6, true, null));
+            ListFilterOrder.Add(new FilterOrderObject("Ordre alphabétique", 1, false, null));
+            ListFilterOrder.Add(new FilterOrderObject("Du Ordre alphabétique inversé", 1, true, null));
+            ListFilterOrder.Add(new FilterOrderObject("Dix dernières offres", 6, false, 10));
+            for (int i = 0; i < ListTypesPostes.Count; i++)
+            { 
+                if (ListTypesPostes[i].ID == FilterDataM.Instance.TypePoste.ID)
+                { 
+                    SelectedTypePoste = ListTypesPostes[i];
+                    break;
+                }
+            }
+            for (int i = 0; i < ListTypesContrat.Count; i++)
+            {
+                if (ListTypesContrat[i].ID == FilterDataM.Instance.TypeContrat.ID)
+                {
+                    SelectedTypeContrat = ListTypesContrat[i];
+                    break;
+                }
+            }
+            for (int i = 0; i < ListRegions.Count; i++)
+            {
+                if (ListRegions[i].ID == FilterDataM.Instance.Region.ID)
+                {
+                    SelectedRegion = ListRegions[i];
+                    break;
+                }
+            }
+            for (int i = 0; i < ListFilterOrder.Count; i++)
+            {
+                if (ListFilterOrder[i].Asc == FilterDataM.Instance.FilterOrder.Asc
+                    && ListFilterOrder[i].ColumnNumber == FilterDataM.Instance.FilterOrder.ColumnNumber
+                    && ListFilterOrder[i].Limit == FilterDataM.Instance.FilterOrder.Limit)
+                { 
+                    SelectedFilterOrder = ListFilterOrder[i];
+                    break;
+                }
+            }
+            FilterDataM.Instance.ReloadingPage = false;
         }
 
         public async Task<bool> FilterData()
@@ -233,7 +319,7 @@ namespace FilRouge2
             try
             {
                 await ConnectionDataM.Instance.GetFilteredListOffres(OffreTitle, SelectedTypePoste.ID, SelectedTypeContrat.ID, SelectedRegion.ID,
-                    (DateTime)OffreDateMin, (DateTime)OffreDateMax, OffreDesc, DescConfig, SelectedFilterOrder);
+                    (DateTime)OffreDateMin, (DateTime)OffreDateMax, OffreDesc, FilterDataM.Instance.DescConfig, SelectedFilterOrder);
                 return true;
             }
             catch (InvalidOperationException)
@@ -244,6 +330,64 @@ namespace FilRouge2
         {
             IsFilterLimitNull = SelectedFilterOrder.Limit == null;
             RaisepropertyChanged(nameof(ConnectionState));
+        }
+
+        public void NewOffreEvent(object sender, DTOoffre e)
+        {
+            if (e.TypePosteAssignationAffected)
+            { 
+                AddTypePoste(e.OffreToTransfer.TYPEPOSTE);
+                RaisepropertyChanged(nameof(SelectedTypePoste));
+            }
+        }
+
+        public void DeletedOffreEvent(object sender, DTOoffre e)
+        {
+            if (e.TypePosteAssignationAffected)
+            { 
+                DeleteTypePoste(e.OffreToTransfer.TYPEPOSTE.ID);
+                RaisepropertyChanged(nameof(SelectedTypePoste));
+            }
+        }
+
+        public void UpdateOffreEvent(object ender, List<DTOoffre> e)
+        {
+            if (e[0].TypePosteAssignationAffected)
+            { DeleteTypePoste(e[0].OffreToTransfer.TYPEPOSTE.ID); }
+            if (e[1].TypePosteAssignationAffected)
+            { AddTypePoste(e[1].OffreToTransfer.TYPEPOSTE); }
+            RaisepropertyChanged(nameof(SelectedTypePoste));
+        }
+
+        public void AddTypePoste(TypePoste typeposte)
+        {
+            ListTypesPostes.Add(typeposte);
+            ListTypesPostes.OrderBy(x => x.INTITULE);
+        }
+
+        public void DeleteTypePoste(int id)
+        {
+            for (int i = 1; i < ListTypesPostes.Count; i++)
+            {
+                if (ListTypesPostes[i].ID == id)
+                {
+                    ListTypesPostes.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        public void UpdateTypePosteEvent(object sender, TypePoste e)
+        {
+            for (int i = 1; i < ListTypesPostes.Count; i++)
+            {
+                if (ListTypesPostes[i].ID == e.ID)
+                {
+                    ListTypesPostes[i].INTITULE = e.INTITULE;
+                    RaisepropertyChanged(nameof(SelectedTypePoste));
+                    break;
+                }
+            }
         }
     }
 }

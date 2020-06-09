@@ -49,25 +49,30 @@
             <TextBlock Grid.Column="0" Grid.Row="0" x:Uid="DateMinLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(DMin)"/>
             <CalendarDatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMinPicker"
                                 Date="{Binding OffreDateMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
-                                DateFormat="{}{day.integer} {month.full} {year.full}" MinDate="{Binding MinChoosableDate,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                MaxDate="{Binding MaxChoosableDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
-                                IsEnabled="{Binding ConnectionState, Converter={StaticResource DateIntToBooleanConverter}}"/>
+                                DateFormat="{}{day.integer} {month.full} {year.full}"
+                                MinDate="{Binding MinChoosableDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
+                                MaxDate="{Binding MaxChoosableDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
+                                IsEnabled="{Binding ConnectionState, Converter={StaticResource DateIntToBooleanConverter}}" DateChanged="CalendarDatePicker_DateChanged"/>
         </Grid>
         <Grid Name="FilterGridDateMax" Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="47*"/>
-                <ColumnDefinition Width="37*"/>
+                <ColumnDefinition Width="33*"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="36*"/>
+                <ColumnDefinition Width="74*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="DateMaxLabelRow"/>
                 <RowDefinition x:Name="DateMaxDataRow"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" x:Uid="DateMaxLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(DMax)" Grid.ColumnSpan="2"/>
+            <TextBlock Grid.Column="0" x:Uid="DateMaxLabel" VerticalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="(DMax)" Grid.ColumnSpan="4"/>
             <CalendarDatePicker Grid.Column="0" Grid.Row="1" x:Uid="DateMaxPicker"
                                 Date="{Binding OffreDateMax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
-                                DateFormat="{}{day.integer} {month.full} {year.full}" MinDate="{Binding MinChoosableDate,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                MaxDate="{Binding MaxChoosableDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
-                                IsEnabled="{Binding ConnectionState, Converter={StaticResource DateIntToBooleanConverter}}"/>
+                                DateFormat="{}{day.integer} {month.full} {year.full}"
+                                MinDate="{Binding MinChoosableDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
+                                MaxDate="{Binding MaxChoosableDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateTimeToDateTimeOffsetConverter}}"
+                                IsEnabled="{Binding ConnectionState, Converter={StaticResource DateIntToBooleanConverter}}" Grid.ColumnSpan="3"
+                                DateChanged="CalendarDatePicker_DateChanged1"/>
         </Grid>
         <Grid Name="FilterGridTypes" Grid.Row="3">
             <Grid.ColumnDefinitions>

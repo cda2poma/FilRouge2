@@ -41,6 +41,12 @@ namespace FilRouge2
 
         private RegionFrancaise _preferedRegion;
 
+        public RegionFrancaise PreferedRegion
+        { 
+            get { return _preferedRegion; }
+            set { _preferedRegion = value; }
+        }
+
         public void Save(RegionFrancaise region)
         {
             _preferedRegion = region;

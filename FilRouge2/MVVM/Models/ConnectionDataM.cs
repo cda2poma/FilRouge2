@@ -72,29 +72,20 @@ namespace FilRouge2
             HubConnect.On<TypePoste>("NewTypePosteEvent", (newTypePoste) =>
             { NewTypePosteEvent(this, newTypePoste); });
 
-            HubConnect.On<int>("DeleteTypePosteEvent", (idTypePoste) =>
-            { DeletedTypePosteEvent(this, idTypePoste); });
-
-            HubConnect.On<TypePoste>("UpdateTypePosteEvent", (updatedTypePoste) =>
-            { UpdateTypePosteEvent(this, updatedTypePoste); });
-
             try
             { 
                 await HubConnect.StartAsync();
                 ConnectionEstablished = true;
                 return true;
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             { return false; }
         }
 
         public int ConnectionState { get; set; }
 
-        public async Task<DateTime> GetMinDate()
-        {
-            FilterDataM.Instance.MinChoosableDate = await HubConnect.InvokeAsync<DateTime>("GetMinDate");
-            return FilterDataM.Instance.MinChoosableDate;
-        }
+        public async Task GetMinDate()
+        { FilterDataM.Instance.MinMinChoosableDate = await HubConnect.InvokeAsync<DateTime>("GetMinDate"); }
 
     public async Task<List<TypePoste>> GetAllTypesPostesPlusVoidValue()
         {

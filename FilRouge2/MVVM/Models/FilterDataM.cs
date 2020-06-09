@@ -37,25 +37,22 @@ namespace FilRouge2
             }
         }
 
-        public event EventHandler<DateTime> MinDateChangeEvent;
+        public DateTime MinMinChoosableDate { get; set; }
 
-        public string Title { get; set; }
-        private DateTime _minChoosableDate;
+        public DateTime MinMaxChoosableDate { get; set; }
 
-        public DateTime MinChoosableDate
-        {
-            get { return _minChoosableDate; }
-            set
-            {
-                _minChoosableDate = value;
-                MinDateChangeEvent(this, value);
-            }
-        }
+        public DateTime MaxMinChoosableDate { get; set; }
+
+        public DateTime MaxMaxChoosableDate { get; set; }
+
+
         public List<TypePoste> ListTypesPostes { get; set; }
         public bool AreThereTypesPosteInList { get; set; }
         public List<TypeContrat> ListTypesContrats { get; set; }
         public List<RegionFrancaise> ListRegions { get; set; }
         public List<FilterOrderObject> ListFilterOrder { get; set; }
+
+        public string Title { get; set; }
         public DateTime DateMin { get; set; }
         public DateTime DateMax { get; set; }
         public TypePoste TypePoste { get; set; }
@@ -66,13 +63,43 @@ namespace FilRouge2
         public FilterOrderObject FilterOrder { get; set; }
         public bool IsFilterLimitNull { get; set; }
 
+        public bool ReloadingPage { get; set; }
+
         public bool DataTransferFilterIsDefault(DTOfilter filter)
         {
-            return filter.TITRE == "" && filter.DESC == "" && filter.IDTYPEPOSTE == 0 && filter.IDTYPECONTRAT == 0 && filter.IDREGION == 0 && filter.DATEPUBLICATIONMIN == _minChoosableDate
+            return filter.TITRE == "" && filter.DESC == "" && filter.IDTYPEPOSTE == 0 && filter.IDTYPECONTRAT == 0 && filter.IDREGION == 0 && filter.DATEPUBLICATIONMIN == MinMinChoosableDate
                   && filter.DATEPUBLICATIONMAX == DateTime.Today && FilterOrderObjectIsDefault(filter.FilterOrder);
         }
 
         private bool FilterOrderObjectIsDefault(FilterOrderObject filter)
         { return filter.ColumnNumber == 6 && filter.Asc == false && filter.Limit == null; }
+
+        public bool OffreMatchesFilter(Offre offre)
+        {
+            if (!string.IsNullOrEmpty(offre.TEXTEDESC) && !string.IsNullOrEmpty(Desc))
+            {
+                if (DescConfig < 0 && !Desc.Split(' ').Any(s => offre.TEXTEDESC.ToLower().Contains(s.ToLower())))
+                { return false; }
+                else if (DescConfig == 0)
+                {
+                    string[] words = Desc.Split();
+                    foreach (string word in words)
+                    {
+                        if (!offre.TEXTEDESC.ToLower().Contains(word.ToLower()))
+                        { return false; }
+                    }
+                }
+            }
+            if (!offre.TEXTEDESC.ToLower().Contains(Desc.ToLower()))
+            { return false; }
+            if (!(offre.DATEPUBLICATION >= DateMin)) return false;
+            if (!(offre.DATEPUBLICATION <= DateMax)) return false;
+            if (!(string.IsNullOrEmpty(Title)))
+            { if (!offre.TITRE.ToLower().Contains(Title)) return false; }
+            if (!(TypePoste.ID == 0 || TypePoste.ID == offre.TYPEPOSTE.ID)) return false;
+            if (!(TypeContrat.ID == 0 || TypeContrat.ID == offre.TYPECONTRAT.ID)) return false;
+            if (!(Region.ID == 0 || Region.ID == offre.REGION.ID)) return false;
+            return true;
+        }
     }
 }

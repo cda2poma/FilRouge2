@@ -35,6 +35,8 @@ namespace FilRouge2
             }
         }
 
+        private bool suscribed;
+
         public string Title
         {
             get { return OffreDataM.Instance.Title; }
@@ -144,6 +146,14 @@ namespace FilRouge2
                 { ListOffres.OrderByDescending(t => t.DATEPUBLICATION); }
             }
             SelectedOffre = ListOffres[0];
+            if (!suscribed)
+            {
+                suscribed = true;
+                ConnectionDataM.Instance.NewOffreEvent += NewOffreEvent;
+                ConnectionDataM.Instance.UpdateOffreEvent += UpdateOffreEvent;
+                ConnectionDataM.Instance.DeletedOffreEvent += DeletedOffreEvent;
+            }
+            
         }
 
         public void SetSelectedOffre()
@@ -155,6 +165,52 @@ namespace FilRouge2
             LastEditionDate = (DateTime)SelectedOffre.DATEDERNIEREMAJ;
             Desc = SelectedOffre.TEXTEDESC;
             Url = SelectedOffre.LIENWEB;
+        }
+
+        public void NewOffreEvent(object sender, DTOoffre e)
+        {
+            if (FilterDataM.Instance.OffreMatchesFilter(e.OffreToTransfer))
+            { 
+                ListOffres.Add(e.OffreToTransfer);
+                FilterListOffres();
+            }
+            
+        }
+
+        public void UpdateOffreEvent(object sender, List<DTOoffre> e)
+        {
+            if(ListOffres.Contains(e[0].OffreToTransfer))
+            { ListOffres.Remove(e[0].OffreToTransfer); }
+            if (FilterDataM.Instance.OffreMatchesFilter(e[1].OffreToTransfer))
+            {
+                ListOffres.Add(e[1].OffreToTransfer);
+                FilterListOffres();
+            }
+        }
+
+        public void DeletedOffreEvent(object sender, DTOoffre e)
+        {
+            if (ListOffres.Contains(e.OffreToTransfer))
+            { ListOffres.Remove(e.OffreToTransfer); }
+        }
+
+        public void FilterListOffres()
+        {
+            FilterOrderObject filterOrder = FilterDataM.Instance.FilterOrder;
+            if (filterOrder.ColumnNumber == 1)
+            {
+                if (filterOrder.Asc)
+                { ListOffres.OrderBy(t => t.TITRE); }
+                else
+                { ListOffres.OrderByDescending(t => t.TITRE); }
+            }
+            else if (filterOrder.ColumnNumber == 6)
+            {
+                if (filterOrder.Asc)
+                { ListOffres.OrderBy(t => t.DATEPUBLICATION); }
+                else
+                { ListOffres.OrderByDescending(t => t.DATEPUBLICATION); }
+            }
         }
     }
 }
