@@ -63,7 +63,7 @@
                 <RowDefinition x:Name="OffreUrlRow" Height="25"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" x:Uid="OffreTitle" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding Title, Mode=TwoWay}"/>
-            <TextBlock Grid.Row="1" x:Uid="OffreTypePoste" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding TypePosteTitle, Mode=TwoWay}"/>
+            <TextBlock Grid.Row="1" x:Uid="OffreTypePoste" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding TypePoste, Mode=TwoWay}"/>
             <TextBlock Grid.Row="2" x:Uid="OffreTypeContrat" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding TypeContratTitle, Mode=TwoWay}"/>
             <TextBlock Grid.Row="3" x:Uid="OffreRegion" Style="{StaticResource BaseTextBlockStyle}" Text="{Binding RegionName, Mode=TwoWay}"/>
             <Grid Grid.Row="4" x:Name="OffreDateGrid">
