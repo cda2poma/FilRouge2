@@ -1,8 +1,10 @@
 ﻿using BO;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,21 +23,22 @@ namespace FilRouge2
             get { return OffreDataM.Instance.Offre; }
             set
             {
-                OffreDataM.Instance.Offre = value;
-                Title = value.TITRE;
-                TypePosteTitle = value.TYPEPOSTE.INTITULE;
-                TypeContratTitle = value.TYPECONTRAT.INTITULE;
-                RegionName = value.REGION.NOM;
-                PublicationDate = value.DATEPUBLICATION;
-                LastEditionDate = (DateTime)value.DATEDERNIEREMAJ;
-                Desc = value.TEXTEDESC;
-                Url = value.LIENWEB;
-                SetSelectedOffre();
-                RaisepropertyChanged();
+                if (!_listCleared)
+                {
+                    OffreDataM.Instance.Offre = value;
+                    Title = value.TITRE;
+                    TypePosteTitle = value.TYPEPOSTE.INTITULE;
+                    TypeContratTitle = value.TYPECONTRAT.INTITULE;
+                    RegionName = value.REGION.NOM;
+                    PublicationDate = value.DATEPUBLICATION;
+                    LastEditionDate = (DateTime)value.DATEDERNIEREMAJ;
+                    Desc = value.TEXTEDESC;
+                    Url = value.LIENWEB;
+                    SetSelectedOffre();
+                    RaisepropertyChanged();
+                }
             }
         }
-
-        private bool suscribed;
 
         public string Title
         {
@@ -117,43 +120,43 @@ namespace FilRouge2
             }
         }
 
+        public event EventHandler<string> SelectedOffreDeletedEvent;
+
         public void UpdateListOffres()
         {
-            List<Offre> updatedListOffres = OffreDataM.Instance.ListOffres;
-            for (int i = ListOffres.Count - 1; i >= 0; i--)
-            {
-                if (!updatedListOffres.Contains(ListOffres[i]))
-                { ListOffres.RemoveAt(i); }
-            }
-            foreach (Offre offre in updatedListOffres)
-            {
-                if (!ListOffres.Contains(offre))
-                { ListOffres.Add(offre); }
-            }
-            FilterOrderObject filterOrder = FilterDataM.Instance.FilterOrder;
-            if (filterOrder.ColumnNumber == 1)
-            { 
-                if (filterOrder.Asc)
-                { ListOffres.OrderBy(t => t.TITRE); }
-                else
-                { ListOffres.OrderByDescending(t => t.TITRE); }
-            }
-            else if (filterOrder.ColumnNumber == 6)
-            {
-                if (filterOrder.Asc)
-                { ListOffres.OrderBy(t => t.DATEPUBLICATION); }
-                else
-                { ListOffres.OrderByDescending(t => t.DATEPUBLICATION); }
-            }
+            ListOffres.Clear();
+            foreach (Offre offre in OffreDataM.Instance.ListOffres)
+            { ListOffres.Add(offre); }
             SelectedOffre = ListOffres[0];
-            if (!suscribed)
+            ConnectionDataM.Instance.NewOffreEvent += NewOffreEvent;
+            ConnectionDataM.Instance.UpdateOffreEvent += UpdateOffreEvent;
+            ConnectionDataM.Instance.DeletedOffreEvent += DeletedOffreEvent;
+        }
+
+        private bool _listCleared;
+
+        public void UpdateListOffres(int id)
+        {
+            bool offreFound = false;
+            string oldOffreName = SelectedOffre.TITRE;
+            _listCleared = true;
+            ListOffres.Clear();
+            _listCleared = false;
+            for (int i = 0; i < OffreDataM.Instance.ListOffres.Count; i++)
             {
-                suscribed = true;
-                ConnectionDataM.Instance.NewOffreEvent += NewOffreEvent;
-                ConnectionDataM.Instance.UpdateOffreEvent += UpdateOffreEvent;
-                ConnectionDataM.Instance.DeletedOffreEvent += DeletedOffreEvent;
+                ListOffres.Add(OffreDataM.Instance.ListOffres[i]);
+                if (ListOffres[i].ID == id)
+                { 
+                    SelectedOffre = ListOffres[i];
+                    offreFound = true;
+                }
             }
-            
+            if (!offreFound)
+            { 
+                SelectedOffre = ListOffres[0];
+                SelectedOffreDeletedEvent(this, oldOffreName);
+            }
+            RaisepropertyChanged(nameof(SelectedOffre));
         }
 
         public void SetSelectedOffre()
@@ -170,28 +173,42 @@ namespace FilRouge2
         public void NewOffreEvent(object sender, DTOoffre e)
         {
             if (FilterDataM.Instance.OffreMatchesFilter(e.OffreToTransfer))
-            { 
-                ListOffres.Add(e.OffreToTransfer);
+            {
+                OffreDataM.Instance.ListOffres.Add(e.OffreToTransfer);
                 FilterListOffres();
+                UpdateListOffres(SelectedOffre.ID);
             }
-            
         }
 
         public void UpdateOffreEvent(object sender, List<DTOoffre> e)
         {
-            if(ListOffres.Contains(e[0].OffreToTransfer))
-            { ListOffres.Remove(e[0].OffreToTransfer); }
-            if (FilterDataM.Instance.OffreMatchesFilter(e[1].OffreToTransfer))
+            for (int i = 0; i < OffreDataM.Instance.ListOffres.Count; i++)
             {
-                ListOffres.Add(e[1].OffreToTransfer);
+                if (OffreDataM.Instance.ListOffres[i].ID == SelectedOffre.ID)
+                { 
+                    OffreDataM.Instance.ListOffres.RemoveAt(i);
+                    break;
+                }
+            }
+            if (FilterDataM.Instance.OffreMatchesFilter(e[1].OffreToTransfer))
+            { 
+                OffreDataM.Instance.ListOffres.Add(e[1].OffreToTransfer);
                 FilterListOffres();
             }
+            UpdateListOffres(SelectedOffre.ID);
         }
 
         public void DeletedOffreEvent(object sender, DTOoffre e)
         {
-            if (ListOffres.Contains(e.OffreToTransfer))
-            { ListOffres.Remove(e.OffreToTransfer); }
+            for (int i = 0; i < OffreDataM.Instance.ListOffres.Count; i++)
+            {
+                if (OffreDataM.Instance.ListOffres[i].ID == SelectedOffre.ID)
+                {
+                    OffreDataM.Instance.ListOffres.RemoveAt(i);
+                    UpdateListOffres(SelectedOffre.ID);
+                    break;
+                }
+            }
         }
 
         public void FilterListOffres()
@@ -200,16 +217,16 @@ namespace FilRouge2
             if (filterOrder.ColumnNumber == 1)
             {
                 if (filterOrder.Asc)
-                { ListOffres.OrderBy(t => t.TITRE); }
+                { OffreDataM.Instance.ListOffres = OffreDataM.Instance.ListOffres.OrderBy(t => t.TITRE).ToList(); }
                 else
-                { ListOffres.OrderByDescending(t => t.TITRE); }
+                { OffreDataM.Instance.ListOffres = OffreDataM.Instance.ListOffres.OrderByDescending(t => t.TITRE).ToList(); }
             }
             else if (filterOrder.ColumnNumber == 6)
             {
                 if (filterOrder.Asc)
-                { ListOffres.OrderBy(t => t.DATEPUBLICATION); }
+                { OffreDataM.Instance.ListOffres = OffreDataM.Instance.ListOffres.OrderBy(t => t.DATEPUBLICATION).ToList(); }
                 else
-                { ListOffres.OrderByDescending(t => t.DATEPUBLICATION); }
+                { OffreDataM.Instance.ListOffres = OffreDataM.Instance.ListOffres.OrderByDescending(t => t.DATEPUBLICATION).ToList(); }
             }
         }
     }

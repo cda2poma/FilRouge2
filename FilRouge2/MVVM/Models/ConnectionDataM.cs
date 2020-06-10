@@ -40,11 +40,8 @@ namespace FilRouge2
 
         public event EventHandler<List<DTOoffre>> UpdateOffreEvent;
 
-        public event EventHandler<TypePoste> NewTypePosteEvent;
-
-        public event EventHandler<int> DeletedTypePosteEvent;
-
         public event EventHandler<TypePoste> UpdateTypePosteEvent;
+
 
         public HubConnection HubConnect;
 
@@ -69,8 +66,8 @@ namespace FilRouge2
             HubConnect.On<List<DTOoffre>>("UpdateOffreEvent", (updatedOffre) =>
             { UpdateOffreEvent(this, updatedOffre); });
 
-            HubConnect.On<TypePoste>("NewTypePosteEvent", (newTypePoste) =>
-            { NewTypePosteEvent(this, newTypePoste); });
+            HubConnect.On<TypePoste>("UpdateTypePosteEvent", (newTypePoste) =>
+            { UpdateTypePosteEvent(this, newTypePoste); });
 
             try
             { 

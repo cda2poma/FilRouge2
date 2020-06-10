@@ -44,6 +44,7 @@ namespace FilRouge2
                     if (await vm.LoadData())
                     {
                         vm.ConnectionState = 0;
+                        vm.SelectedTypePosteDeletedEvent += SelectedTypePosteDeletedEvent;
                     }
                 }
                 if (vm.ConnectionState != 0)
@@ -147,5 +148,15 @@ namespace FilRouge2
 
         private void CalendarDatePicker_DateChanged1(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         { vm.MinMaxChoosableDate = ((DateTimeOffset)(args.NewDate)).DateTime; }
+
+        private async void SelectedTypePosteDeletedEvent(object sender, string typePosteName)
+        {
+            await new ContentDialog()
+            {
+                Title = "Sélection supprimée",
+                Content = "Le type de poste que vous aviez sélectionné a été supprimé.",
+                CloseButtonText = "Ok"
+            }.ShowAsync();
+        }
     }
 }

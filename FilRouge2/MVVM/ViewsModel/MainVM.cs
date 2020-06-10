@@ -183,6 +183,8 @@ namespace FilRouge2
             }
         }
 
+        public event EventHandler<string> SelectedTypePosteDeletedEvent;
+
         public void ResetData()
         {
             OffreTitle = "";
@@ -335,19 +337,13 @@ namespace FilRouge2
         public void NewOffreEvent(object sender, DTOoffre e)
         {
             if (e.TypePosteAssignationAffected)
-            { 
-                AddTypePoste(e.OffreToTransfer.TYPEPOSTE);
-                RaisepropertyChanged(nameof(SelectedTypePoste));
-            }
+            { AddTypePoste(e.OffreToTransfer.TYPEPOSTE); }
         }
 
         public void DeletedOffreEvent(object sender, DTOoffre e)
         {
             if (e.TypePosteAssignationAffected)
-            { 
-                DeleteTypePoste(e.OffreToTransfer.TYPEPOSTE.ID);
-                RaisepropertyChanged(nameof(SelectedTypePoste));
-            }
+            { DeleteTypePoste(e.OffreToTransfer.TYPEPOSTE.ID); }
         }
 
         public void UpdateOffreEvent(object ender, List<DTOoffre> e)
@@ -356,13 +352,13 @@ namespace FilRouge2
             { DeleteTypePoste(e[0].OffreToTransfer.TYPEPOSTE.ID); }
             if (e[1].TypePosteAssignationAffected)
             { AddTypePoste(e[1].OffreToTransfer.TYPEPOSTE); }
-            RaisepropertyChanged(nameof(SelectedTypePoste));
         }
 
-        public void AddTypePoste(TypePoste typeposte)
+        public void AddTypePoste(TypePoste typePoste)
         {
-            ListTypesPostes.Add(typeposte);
-            ListTypesPostes.OrderBy(x => x.INTITULE);
+            FilterDataM.Instance.ListTypesPostes.Add(typePoste);
+            FilterDataM.Instance.ListTypesPostes = FilterDataM.Instance.ListTypesPostes.OrderBy(x => x.INTITULE).ToList();
+            UpdateListTypesPostes();
         }
 
         public void DeleteTypePoste(int id)
@@ -371,10 +367,11 @@ namespace FilRouge2
             {
                 if (ListTypesPostes[i].ID == id)
                 {
-                    ListTypesPostes.RemoveAt(i);
+                    FilterDataM.Instance.ListTypesPostes.RemoveAt(i);
                     break;
                 }
             }
+            UpdateListTypesPostes();
         }
 
         public void UpdateTypePosteEvent(object sender, TypePoste e)
@@ -384,10 +381,33 @@ namespace FilRouge2
                 if (ListTypesPostes[i].ID == e.ID)
                 {
                     ListTypesPostes[i].INTITULE = e.INTITULE;
-                    RaisepropertyChanged(nameof(SelectedTypePoste));
                     break;
                 }
             }
+            UpdateListTypesPostes();
+        }
+
+        private void UpdateListTypesPostes()
+        {
+            int id = SelectedTypePoste.ID;
+            string oldSelectedName = SelectedTypePoste.INTITULE;
+            bool idFound = false;
+            ListTypesPostes.Clear();
+            for (int i = 0; i < FilterDataM.Instance.ListTypesPostes.Count; i++)
+            {
+                ListTypesPostes.Add(FilterDataM.Instance.ListTypesPostes[i]);
+                if (ListTypesPostes[i].ID == id)
+                {
+                    idFound = true;
+                    SelectedTypePoste = ListTypesPostes[i];
+                }
+            }
+            if (!idFound)
+            { 
+                SelectedTypePoste = ListTypesPostes[0];
+                SelectedTypePosteDeletedEvent(this, oldSelectedName);
+            }
+            RaisepropertyChanged(nameof(SelectedTypePoste));
         }
     }
 }

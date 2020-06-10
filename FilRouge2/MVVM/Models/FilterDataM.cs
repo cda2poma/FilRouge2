@@ -45,7 +45,6 @@ namespace FilRouge2
 
         public DateTime MaxMaxChoosableDate { get; set; }
 
-
         public List<TypePoste> ListTypesPostes { get; set; }
         public bool AreThereTypesPosteInList { get; set; }
         public List<TypeContrat> ListTypesContrats { get; set; }
@@ -90,8 +89,6 @@ namespace FilRouge2
                     }
                 }
             }
-            if (!offre.TEXTEDESC.ToLower().Contains(Desc.ToLower()))
-            { return false; }
             if (!(offre.DATEPUBLICATION >= DateMin)) return false;
             if (!(offre.DATEPUBLICATION <= DateMax)) return false;
             if (!(string.IsNullOrEmpty(Title)))

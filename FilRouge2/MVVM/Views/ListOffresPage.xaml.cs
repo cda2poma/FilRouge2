@@ -31,7 +31,10 @@ namespace FilRouge2
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
-        { vm.UpdateListOffres(); }
+        { 
+            vm.UpdateListOffres();
+            vm.SelectedOffreDeletedEvent += SelectedOffreDeletedEvent;
+        }
 
         private void ListOffres_SelectionChanged(object sender, SelectionChangedEventArgs e)
         { vm.SetSelectedOffre(); }
@@ -43,6 +46,16 @@ namespace FilRouge2
         {
             FilterDataM.Instance.ReloadingPage = true;
             Frame.Navigate(typeof(MainPage));
+        }
+
+        private async void SelectedOffreDeletedEvent(object sender, string e)
+        {
+            await new ContentDialog()
+            {
+                Title = "Sélection supprimée",
+                Content = "Loffre que vous aviez sélectionnée a été supprimée.",
+                CloseButtonText = "Ok"
+            }.ShowAsync();
         }
     }
 }
