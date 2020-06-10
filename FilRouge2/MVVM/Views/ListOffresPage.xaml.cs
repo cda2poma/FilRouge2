@@ -31,9 +31,11 @@ namespace FilRouge2
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
-        { 
-            vm.UpdateListOffres();
+        {
+            OffreDataM.Instance.ViewingSingleOffre = false;
+            vm.GoBackToMainPageEvent += GoBackToMainPageEvent;
             vm.SelectedOffreDeletedEvent += SelectedOffreDeletedEvent;
+            vm.UpdateListOffres();
         }
 
         private void ListOffres_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -50,12 +52,29 @@ namespace FilRouge2
 
         private async void SelectedOffreDeletedEvent(object sender, string e)
         {
-            await new ContentDialog()
+            if (!OffreDataM.Instance.ViewingSingleOffre)
             {
-                Title = "Sélection supprimée",
-                Content = "Loffre que vous aviez sélectionnée a été supprimée.",
-                CloseButtonText = "Ok"
-            }.ShowAsync();
+                await new ContentDialog()
+                {
+                    Title = "Sélection supprimée",
+                    Content = "L'offre que vous aviez sélectionnée a été supprimée.",
+                    CloseButtonText = "Ok"
+                }.ShowAsync();
+            }
+        }
+
+        private async void GoBackToMainPageEvent(object sender, EventArgs e)
+        {
+            if (!OffreDataM.Instance.ViewingSingleOffre)
+            {
+                await new ContentDialog()
+                {
+                    Title = "Aucune offre à afficher",
+                    Content = "Il n'y a aucune offre à afficher. Vous allez retourner à la page principale.",
+                    CloseButtonText = "Ok"
+                }.ShowAsync();
+                Frame.Navigate(typeof(MainPage));
+            }
         }
     }
 }

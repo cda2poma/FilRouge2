@@ -93,8 +93,11 @@ namespace FilRouge2
             get { return FilterDataM.Instance.TypePoste; }
             set
             {
-                FilterDataM.Instance.TypePoste = value;
-                RaisepropertyChanged();
+                if (FilterDataM.Instance.IsMainPageActive)
+                {
+                    FilterDataM.Instance.TypePoste = value;
+                    RaisepropertyChanged();
+                }
             }
         }
 
@@ -277,14 +280,18 @@ namespace FilRouge2
             ListFilterOrder.Add(new FilterOrderObject("Ordre alphabétique", 1, false, null));
             ListFilterOrder.Add(new FilterOrderObject("Du Ordre alphabétique inversé", 1, true, null));
             ListFilterOrder.Add(new FilterOrderObject("Dix dernières offres", 6, false, 10));
+            bool selectedTypePosteFound = false;
             for (int i = 0; i < ListTypesPostes.Count; i++)
             { 
                 if (ListTypesPostes[i].ID == FilterDataM.Instance.TypePoste.ID)
                 { 
                     SelectedTypePoste = ListTypesPostes[i];
+                    selectedTypePosteFound = true;
                     break;
                 }
             }
+            if (!selectedTypePosteFound)
+            { SelectedTypePoste = ListTypesPostes[0]; }
             for (int i = 0; i < ListTypesContrat.Count; i++)
             {
                 if (ListTypesContrat[i].ID == FilterDataM.Instance.TypeContrat.ID)
@@ -396,13 +403,13 @@ namespace FilRouge2
             for (int i = 0; i < FilterDataM.Instance.ListTypesPostes.Count; i++)
             {
                 ListTypesPostes.Add(FilterDataM.Instance.ListTypesPostes[i]);
-                if (ListTypesPostes[i].ID == id)
+                if (ListTypesPostes[i].ID == id && FilterDataM.Instance.IsMainPageActive)
                 {
                     idFound = true;
                     SelectedTypePoste = ListTypesPostes[i];
                 }
             }
-            if (!idFound)
+            if (!idFound && FilterDataM.Instance.IsMainPageActive)
             { 
                 SelectedTypePoste = ListTypesPostes[0];
                 SelectedTypePosteDeletedEvent(this, oldSelectedName);

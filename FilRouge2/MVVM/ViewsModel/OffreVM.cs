@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,12 +19,12 @@ namespace FilRouge2
             }
         }
 
-        public string TypePosteTitle
+        public TypePoste TypePoste
         {
-            get { return OffreDataM.Instance.TypePosteTitle; }
+            get { return OffreDataM.Instance.TypePoste; }
             set
             {
-                OffreDataM.Instance.TypePosteTitle = value;
+                OffreDataM.Instance.TypePoste = value;
                 RaisepropertyChanged();
             }
         }
@@ -87,5 +88,50 @@ namespace FilRouge2
                 RaisepropertyChanged();
             }
         }
+
+        public event EventHandler<Offre> EditedOffre_Event;
+
+        public event EventHandler DeletedOffre_Event;
+
+        public void Suscribe()
+        {
+            OffreDataM.Instance.ViewingSingleOffre = true;
+            ConnectionDataM.Instance.UpdateOffreEvent += UpdateOffreEvent;
+            ConnectionDataM.Instance.DeletedOffreEvent += DeletedOffreEvent;
+            ConnectionDataM.Instance.UpdateTypePosteEvent += UpdateTypePosteEvent;
+        }
+
+        public void Unsuscribe()
+        {
+            OffreDataM.Instance.ViewingSingleOffre = false;
+            ConnectionDataM.Instance.UpdateOffreEvent += UpdateOffreEvent;
+            ConnectionDataM.Instance.DeletedOffreEvent += DeletedOffreEvent;
+            ConnectionDataM.Instance.UpdateTypePosteEvent += UpdateTypePosteEvent;
+        }
+
+        private void UpdateOffreEvent(object sender, List<DTOoffre> e)
+        {
+            if (OffreDataM.Instance.ViewingSingleOffre && e[1].OffreToTransfer.ID == OffreDataM.Instance.Offre.ID)
+            {
+                Title = e[1].OffreToTransfer.TITRE;
+                TypePoste = e[1].OffreToTransfer.TYPEPOSTE;
+                TypeContratTitle = e[1].OffreToTransfer.TYPECONTRAT.INTITULE;
+                RegionName = e[1].OffreToTransfer.REGION.NOM;
+                PublicationDate = e[1].OffreToTransfer.DATEPUBLICATION;
+                LastEditionDate = (DateTime)e[1].OffreToTransfer.DATEDERNIEREMAJ;
+                Desc = e[1].OffreToTransfer.TEXTEDESC;
+                Url = e[1].OffreToTransfer.LIENWEB;
+                EditedOffre_Event(this, e[1].OffreToTransfer);
+            }
+        }
+
+        private void DeletedOffreEvent(object sender, DTOoffre e)
+        {
+            if (e.OffreToTransfer.ID == OffreDataM.Instance.Offre.ID)
+            { DeletedOffre_Event(this, new EventArgs()); }
+        }
+
+        private void UpdateTypePosteEvent(object sender, TypePoste e)
+        { TypePoste = e; }
     }
 }

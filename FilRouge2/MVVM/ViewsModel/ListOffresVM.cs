@@ -23,11 +23,11 @@ namespace FilRouge2
             get { return OffreDataM.Instance.Offre; }
             set
             {
-                if (!_listCleared)
+                if (!_listCleared && !OffreDataM.Instance.ViewingSingleOffre)
                 {
                     OffreDataM.Instance.Offre = value;
                     Title = value.TITRE;
-                    TypePosteTitle = value.TYPEPOSTE.INTITULE;
+                    TypePoste = value.TYPEPOSTE;
                     TypeContratTitle = value.TYPECONTRAT.INTITULE;
                     RegionName = value.REGION.NOM;
                     PublicationDate = value.DATEPUBLICATION;
@@ -50,12 +50,12 @@ namespace FilRouge2
             }
         }
 
-        public string TypePosteTitle
+        public TypePoste TypePoste
         {
-            get { return OffreDataM.Instance.TypePosteTitle; }
+            get { return OffreDataM.Instance.TypePoste; }
             set
             {
-                OffreDataM.Instance.TypePosteTitle = value;
+                OffreDataM.Instance.TypePoste = value;
                 RaisepropertyChanged();
             }
         }
@@ -122,15 +122,37 @@ namespace FilRouge2
 
         public event EventHandler<string> SelectedOffreDeletedEvent;
 
+        public event EventHandler GoBackToMainPageEvent;
+
         public void UpdateListOffres()
         {
             ListOffres.Clear();
             foreach (Offre offre in OffreDataM.Instance.ListOffres)
             { ListOffres.Add(offre); }
-            SelectedOffre = ListOffres[0];
-            ConnectionDataM.Instance.NewOffreEvent += NewOffreEvent;
-            ConnectionDataM.Instance.UpdateOffreEvent += UpdateOffreEvent;
-            ConnectionDataM.Instance.DeletedOffreEvent += DeletedOffreEvent;
+            if (ListOffres.Count > 0)
+            { 
+                SelectedOffre = ListOffres[0];
+                if (!OffreDataM.Instance.ListOffresSuscribed)
+                {
+                    ConnectionDataM.Instance.NewOffreEvent += NewOffreEvent;
+                    ConnectionDataM.Instance.UpdateOffreEvent += UpdateOffreEvent;
+                    ConnectionDataM.Instance.DeletedOffreEvent += DeletedOffreEvent;
+                    ConnectionDataM.Instance.UpdateTypePosteEvent += UpdateTypePosteEvent;
+                    OffreDataM.Instance.ListOffresSuscribed = true;
+                }
+            }
+            else
+            {
+                if (OffreDataM.Instance.ListOffresSuscribed)
+                {
+                    ConnectionDataM.Instance.NewOffreEvent -= NewOffreEvent;
+                    ConnectionDataM.Instance.UpdateOffreEvent -= UpdateOffreEvent;
+                    ConnectionDataM.Instance.DeletedOffreEvent -= DeletedOffreEvent;
+                    ConnectionDataM.Instance.UpdateTypePosteEvent -= UpdateTypePosteEvent;
+                    OffreDataM.Instance.ListOffresSuscribed = false;
+                }
+                GoBackToMainPageEvent(this, new EventArgs());
+            }
         }
 
         private bool _listCleared;
@@ -152,16 +174,22 @@ namespace FilRouge2
                 }
             }
             if (!offreFound)
-            { 
-                SelectedOffre = ListOffres[0];
-                SelectedOffreDeletedEvent(this, oldOffreName);
+            {
+                if (ListOffres.Count == 0)
+                { GoBackToMainPageEvent(this, new EventArgs()); }
+                else
+                {
+                    SelectedOffre = ListOffres[0];
+                    if (!OffreDataM.Instance.ViewingSingleOffre)
+                    { SelectedOffreDeletedEvent(this, oldOffreName); }
+                    RaisepropertyChanged(nameof(SelectedOffre));
+                }
             }
-            RaisepropertyChanged(nameof(SelectedOffre));
         }
 
         public void SetSelectedOffre()
         {
-            TypePosteTitle = SelectedOffre.TYPEPOSTE.INTITULE;
+            TypePoste = SelectedOffre.TYPEPOSTE;
             TypeContratTitle = SelectedOffre.TYPECONTRAT.INTITULE;
             RegionName = SelectedOffre.REGION.NOM;
             PublicationDate = SelectedOffre.DATEPUBLICATION;
@@ -196,6 +224,7 @@ namespace FilRouge2
                 FilterListOffres();
             }
             UpdateListOffres(SelectedOffre.ID);
+            
         }
 
         public void DeletedOffreEvent(object sender, DTOoffre e)
@@ -209,6 +238,12 @@ namespace FilRouge2
                     break;
                 }
             }
+        }
+
+        private void UpdateTypePosteEvent(object sender, TypePoste e)
+        {
+            if (TypePoste.ID == e.ID)
+            { TypePoste = e; }
         }
 
         public void FilterListOffres()
@@ -228,6 +263,15 @@ namespace FilRouge2
                 else
                 { OffreDataM.Instance.ListOffres = OffreDataM.Instance.ListOffres.OrderByDescending(t => t.DATEPUBLICATION).ToList(); }
             }
+        }
+
+        public void Unsuscribe()
+        {
+            ConnectionDataM.Instance.NewOffreEvent -= NewOffreEvent;
+            ConnectionDataM.Instance.UpdateOffreEvent -= UpdateOffreEvent;
+            ConnectionDataM.Instance.DeletedOffreEvent -= DeletedOffreEvent;
+            ConnectionDataM.Instance.UpdateTypePosteEvent -= UpdateTypePosteEvent;
+            OffreDataM.Instance.ListOffresSuscribed = false;
         }
     }
 }

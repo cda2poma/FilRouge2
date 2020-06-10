@@ -36,6 +36,7 @@ namespace FilRouge2
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            FilterDataM.Instance.IsMainPageActive = true;
             if (!ConnectionDataM.Instance.ConnectionEstablished)
             {
                 vm.ConnectionState = 1;
@@ -158,5 +159,8 @@ namespace FilRouge2
                 CloseButtonText = "Ok"
             }.ShowAsync();
         }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        { FilterDataM.Instance.IsMainPageActive = false; }
     }
 }

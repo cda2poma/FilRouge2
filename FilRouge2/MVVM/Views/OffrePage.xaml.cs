@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -32,5 +33,42 @@ namespace FilRouge2
 
         private void Button_Click(object sender, RoutedEventArgs e)
         { Frame.Navigate(typeof(ListOffresPage)); }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            vm.DeletedOffre_Event += DeletedOffre_Event;
+            vm.EditedOffre_Event += EditedOffre_Event;
+            vm.Suscribe();
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            vm.DeletedOffre_Event -= DeletedOffre_Event;
+            vm.EditedOffre_Event -= EditedOffre_Event;
+            vm.Unsuscribe();
+        }
+
+        private async void DeletedOffre_Event(object sender, EventArgs e)
+        {
+            await new ContentDialog()
+            {
+                Title = "Offre supprimée",
+                Content = "L'offre que vous étiez en train de consulter a été supprimée.",
+                CloseButtonText = "Ok"
+            }.ShowAsync();
+            Frame.Navigate(typeof(ListOffresPage));
+        }
+
+        private async void EditedOffre_Event(object sender, Offre e)
+        {
+            await new ContentDialog()
+            {
+                Title = "Offre modifiée",
+                Content = FilterDataM.Instance.OffreMatchesFilter(e) ?
+                "L'offre que vous étiez en train de consulter a été modifiée." :
+                "L'offre que vous étiez en train de consulter a été modifiée et ne correspond plus à vos critères de recherche.",
+                CloseButtonText = "Ok"
+            }.ShowAsync();
+        }
     }
 }

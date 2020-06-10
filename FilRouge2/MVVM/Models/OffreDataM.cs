@@ -34,13 +34,17 @@ namespace FilRouge2
         public List<Offre> ListOffres { get; set; }
         public Offre Offre { get; set; }
         public string Title { get; set; }
-        public string TypePosteTitle { get; set; }
+        public TypePoste TypePoste { get; set; }
         public string TypeContratTitle { get; set; }
         public string RegionName { get; set; }
         public DateTime PublicationDate { get; set; }
         public DateTime LastEditionDate { get; set; }
         public string Desc { get; set; }
         public string Url { get; set; }
+
+        public bool ListOffresSuscribed { get; set; }
+
+        public bool ViewingSingleOffre { get; set; }
 
         public string GetStringFromDate(DateTime date)
         {

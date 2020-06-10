@@ -61,7 +61,7 @@ namespace FilRouge2
         public int DescConfig { get; set; }
         public FilterOrderObject FilterOrder { get; set; }
         public bool IsFilterLimitNull { get; set; }
-
+        public bool IsMainPageActive {get; set;}
         public bool ReloadingPage { get; set; }
 
         public bool DataTransferFilterIsDefault(DTOfilter filter)

@@ -18,8 +18,9 @@
        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="12,12,12,12">
         <Grid.RowDefinitions>
             <RowDefinition x:Name="ListOffreLabelsRow" Height="40"/>
-            <RowDefinition x:Name="ListOffreRow"/>
+            <RowDefinition x:Name="ListOffreRow" Height="4*"/>
             <RowDefinition x:Name="OffrePreviewRow"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition x:Name="ButtonsRow" Height="40"/>
         </Grid.RowDefinitions>
         <Grid Name="ListOffreLabelsGrid" Grid.Row="0">
@@ -51,7 +52,7 @@
             </ListView.ItemContainerStyle>
         </ListView>
         <Border Grid.Row="1" BorderBrush="Black" BorderThickness="2"/>
-        <Grid Name="OffrePreviewGrid" Grid.Row="2">
+        <Grid Name="OffrePreviewGrid" Grid.Row="2" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="OffreTitreRow" Height="25"/>
                 <RowDefinition x:Name="OffreTypePosteRow" Height="25"/>
@@ -88,7 +89,7 @@
                 </Hyperlink>
             </TextBlock>
         </Grid>
-        <Grid Grid.Row="3" Name="ButtonsGrid">
+        <Grid Grid.Row="4" Name="ButtonsGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="DisplayOffreColumn"/>
                 <ColumnDefinition x:Name="GoBackColumn"/>
